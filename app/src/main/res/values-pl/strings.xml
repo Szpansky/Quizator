@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_application">O aplikacji</string>
+    <string name="action_sign_in">Zaloguj się</string>
+    <string name="action_sign_in_short">Zaloguj</string>
+    <string name="error_field_required">To pole jest wymagane</string>
+    <string name="error_incorrect_password">To hasło jest niepoprawne</string>
+    <string name="error_invalid_email">Ten email jest niepoprawny</string>
+    <string name="error_invalid_password">To hasło nie pasuje</string>
+    <string name="navigation_drawer_close">Zamknij menu</string>
+    <string name="navigation_drawer_open">Otwórz menu</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Hasło</string>
+    <string name="retrieve_password">Odzyskaj hasło</string>
+    <string name="title_activity_main">Moje konto</string>
+    <string name="create_a_new_account">Stwórz nowe konto</string>
+    <string name="title_activity_new_account">Nowe Konto</string>
+    <string name="create_new_account">Stwórz nowe konto</string>
+    <string name="error_invalid_username">Błędna nazwa</string>
+    <string name="password_dont_match">Hasło nie pasuje</string>
+    <string name="retype_password">Ponownie wprowadź hasło</string>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="email_or_username">Email lub Nazwa</string>
+    <string name="title_activity_get_question">Nowe Pytanie</string>
+
+    <string name="get_question">Pobierz pytanie</string>
+    <string name="empty">Brak</string>
+    <string name="procent_of_lvl_complete">Procent ukończenia poziomu:</string>
+    <string name="login">Zalogowany</string>
+    <string name="lvl">Poziom</string>
+    <string name="points">Punkty</string>
+    <string name="next_lvl_is">Następny poziom to:</string>
+    <string name="need_points">Wymaga punktów:</string>
+    <string name="log_out">Wyloguj</string>
+</resources>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\0b1ede95d4a230e5866f56701ea200b6\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="40392f30a601db5675cdf18192aab013d6fee6ec">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\16809add70a4f445473a29d1a8acc66f\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="233f60a165ae622c8b36731502ebbda0f65e1930">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\19.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\48ea527f37d2b1d54876b99e2f6d441b\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b62fdc4cfef174c1e456014195c83fa7de7dc041">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\27.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\6d05e08b61634412642d47647a06bdb2\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f428e2fbc9ed0b297e3a3f420e51e6982f66822d">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\9bccaa5efa7d6361e4c273f0f07f8926\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="508f50705b4fde51a16259f29c854201a3044516">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\ec53f177287dc3a7d8e8756499be2f41\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="7efef32744ca4a436492d5cf28c08698cc2af256">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\16.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.0-beta3.aar\0dfdcfa483121552b1b73fe57697616b\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="55a56e57f9c69ec1e3099ceb677c7be501e9f79c">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\e5a8fb759c6ea692ace9af78243ba61a\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\50e2e3b7865b44a2f8e1b7d4c5f2fe85\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="a37fc31c5ceeaa4532a37358add1b189d8db4af1">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\a7c0259db0e5f19d9d7fc51ff3f0fc9d\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2442771a5590dd4eb4bce00c2e9dca9e22e4c963">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\20.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\play-services-ads-11.6.0.aar\8d737a6c8ef4d2d5212fbba94fe08b21\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6744a722b558c994eb23504c7871807f3fa35533">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\c8813f461cc89a05aa5148c45fa09a30\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="58b12bdb21a84f22e0dc3b047aeceb0a546b1b44">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\0c3aff4d6776c6ecfd9fb6c2873163d8\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6f4138a4e065826cb044d49faea4cfd7191773d1">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\eb3680befb4da1a853110f04fa5c26bf\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f97cf85b0fe70d37a705111dafa6b1b418ea1650">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\play-services-gass-11.6.0.aar\1d3ffaf2d62b9f2dfd1959d637dbba99\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2b0cb1d3587fcae786438f623e9131d4e3b9d35b">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.6.0.aar\38f7d4251cdb79e0b7f7c1c98c9adbd0\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="869a1d15fa9d8e8aa36587b042f553c1baea46bc">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\7a5c5e0048f77f0f83ca085004d75a9d\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b12cd9c87c3dfb012a911b6e38d2444ed0a65e1f">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Marcin\.gradle\caches\transforms-1\files-1.1\play-services-ads-lite-11.6.0.aar\af734c9b1eb387fb90334a859e0680bf\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b1a9377553f36949950d90d77bc3c64f442cd291">
+        <dex dex="C:\Users\Marcin\Documents\GitHub\szkola_myslenia\app\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+
+</items>
