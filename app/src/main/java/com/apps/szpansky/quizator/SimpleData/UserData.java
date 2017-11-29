@@ -2,9 +2,6 @@ package com.apps.szpansky.quizator.SimpleData;
 
 import java.io.Serializable;
 
-/**
- * Created by Marcin on 2017-11-25.
- */
 
 public class UserData implements Serializable {
     private String cookie;
@@ -19,6 +16,15 @@ public class UserData implements Serializable {
     private String rankName;
     private String rankNext;
     private String userAvatar;
+    private String pointsCurrentRank;
+
+    public String getPointsCurrentRank() {
+        return pointsCurrentRank;
+    }
+
+    public void setPointsCurrentRank(String pointsCurrentRank) {
+        this.pointsCurrentRank = pointsCurrentRank;
+    }
 
     public String getCookie() {
         return cookie;

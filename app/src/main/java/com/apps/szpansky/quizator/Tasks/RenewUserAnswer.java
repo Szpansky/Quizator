@@ -15,25 +15,22 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Created by Marcin on 2017-11-29.
- */
 
-public class ReneviewUserAnswer extends AsyncTask {
+public class RenewUserAnswer extends AsyncTask<Void, Void, Boolean> {
 
-    private final String sendRetrievePasswordURL;
+    private final String renewUserAnswerURL;
 
     private final String cookie;
     private final String userId;
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
-    public ReneviewUserAnswer(String cookie, String userId, FragmentManager fragmentManager) {
+    public RenewUserAnswer(String cookie, String userId, FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
         this.cookie = cookie;
         this.userId = userId;
 
-        sendRetrievePasswordURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+        renewUserAnswerURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
     }
 
 
@@ -51,14 +48,14 @@ public class ReneviewUserAnswer extends AsyncTask {
 
 
     @Override
-    protected Object doInBackground(Object[] objects) {
+    protected Boolean doInBackground(Void... voids) {
         URL url;
         try {
-            url = new URL(sendRetrievePasswordURL);
+            url = new URL(renewUserAnswerURL);
             OkHttpClient client = new OkHttpClient();
             Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
-            Response respond = null;
+            Response respond;
             respond = client.newCall(request).execute();
             String json = respond.body().string();
             try {
@@ -76,11 +73,10 @@ public class ReneviewUserAnswer extends AsyncTask {
         return true;
     }
 
-
     @Override
-    protected void onPostExecute(Object o) {
+    protected void onPostExecute(Boolean aBoolean) {
         showProgress(false);
-        if (o.equals(true)) {
+        if (aBoolean) {
             Information information = Information.newInstance("Teraz znów możesz odpowiadać");
             fragmentManager.beginTransaction().add(information, "Information").commit();
         } else {
@@ -89,6 +85,7 @@ public class ReneviewUserAnswer extends AsyncTask {
         }
 
     }
+
 
 }
 

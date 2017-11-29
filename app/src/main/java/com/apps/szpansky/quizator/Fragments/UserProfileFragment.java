@@ -18,8 +18,7 @@ import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.GetQuestion;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
-import com.apps.szpansky.quizator.Tasks.ReneviewUserAnswer;
-import com.apps.szpansky.quizator.Tasks.RetrievePassword;
+import com.apps.szpansky.quizator.Tasks.RenewUserAnswer;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -28,10 +27,6 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
-
-/**
- * Created by Marcin on 2017-11-25.
- */
 
 public class UserProfileFragment extends Fragment implements RewardedVideoAdListener{
 
@@ -52,7 +47,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     TextView completeLvl;
     Loading loading;
     private RewardedVideoAd mAd;
-    private ReneviewUserAnswer mPasswordTask = null;
+    private RenewUserAnswer mPasswordTask = null;
 
 
     public static UserProfileFragment newInstance(UserData userData){
@@ -161,19 +156,22 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
         Integer userPointsInt;
         Integer userPointsNextInt;
+        Integer userPointsCurrentRankInt;
 
         try {
             userPointsInt = Integer.parseInt(userData.getUserPoints());
             userPointsNextInt = Integer.parseInt(userData.getUserPointsNext());
+            userPointsCurrentRankInt = Integer.parseInt(userData.getPointsCurrentRank());
         } catch (NumberFormatException e) {
             userPointsInt = 1;
             userPointsNextInt = 1;
+            userPointsCurrentRankInt = 0;
         }
 
         if (userPointsNextInt == 0) userPointsNextInt = 1;
 
 
-        Integer userRating = ((userPointsInt * 100) / userPointsNextInt);
+        Integer userRating = (((userPointsInt - userPointsCurrentRankInt) * 100) / (userPointsNextInt - userPointsCurrentRankInt));
 
         if (userRating >= 100) userRating = 100;
         if (userRating <= 0) userRating = 0;
@@ -218,8 +216,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     @Override
     public void onRewardedVideoAdClosed() {
         if (REWARDED){
-            showProgress(true);
-            mPasswordTask = new ReneviewUserAnswer(userData.getCookie(),userData.getUserId(),getActivity().getSupportFragmentManager());
+            mPasswordTask = new RenewUserAnswer(userData.getCookie(),userData.getUserId(),getActivity().getSupportFragmentManager());
             mPasswordTask.execute();
         }else{
             showProgress(false);

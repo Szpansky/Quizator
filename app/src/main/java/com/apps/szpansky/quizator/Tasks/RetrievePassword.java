@@ -17,17 +17,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Created by Marcin on 2017-11-29.
- */
 
-public class RetrievePassword extends AsyncTask {
+public class RetrievePassword extends AsyncTask<Void, Void, Boolean> {
 
     private final String sendRetrievePasswordURL;
 
     private final String mEmail;
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
     public RetrievePassword(String email, FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -50,14 +47,14 @@ public class RetrievePassword extends AsyncTask {
 
 
     @Override
-    protected Object doInBackground(Object[] objects) {
+    protected Boolean doInBackground(Void... voids) {
         URL url;
         try {
             url = new URL(sendRetrievePasswordURL);
             OkHttpClient client = new OkHttpClient();
             Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
-            Response respond = null;
+            Response respond;
             respond = client.newCall(request).execute();
             String json = respond.body().string();
             try {
@@ -77,9 +74,9 @@ public class RetrievePassword extends AsyncTask {
 
 
     @Override
-    protected void onPostExecute(Object o) {
+    protected void onPostExecute(Boolean aBoolean) {
         showProgress(false);
-        if (o.equals(true)) {
+        if (aBoolean) {
             Information information = Information.newInstance("Twoje hasło zostało wysłane na podany adres email");
             fragmentManager.beginTransaction().add(information, "Information").commit();
         } else {
