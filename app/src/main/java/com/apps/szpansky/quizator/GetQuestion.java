@@ -1,23 +1,20 @@
 package com.apps.szpansky.quizator;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -30,8 +27,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GetQuestion extends AppCompatActivity {
+public class GetQuestion extends AppCompatActivity implements DialogInterface.OnDismissListener {
 
+    private static boolean FINISH = false;
     private DownloadQuestion mAuthTask = null;
     private UpdatePoints mAuthTask2 = null;
     boolean flag = false;
@@ -45,10 +43,8 @@ public class GetQuestion extends AppCompatActivity {
     private RadioGroup radioGroup;
     public TextView textView;
     private String questionId;
+    private String questionResult;
 
-
-    private View mProgressView;
-    private View mQuestionView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +53,6 @@ public class GetQuestion extends AppCompatActivity {
         setContentView(R.layout.activity_get_question);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mQuestionView = findViewById(R.id.question_view);
-        mProgressView = findViewById(R.id.progressBar);
 
         radioGroup = findViewById(R.id.radioGroup);
 
@@ -95,12 +89,8 @@ public class GetQuestion extends AppCompatActivity {
             public boolean onLongClick(View v) {
 
                 if (getUserAnswer().equals(correctAnswer)) {
-                    Snackbar.make(v, "Brawo, odpowiedź poprawna", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
                     AnswerIsCorrect();
                 } else {
-                    Snackbar.make(v, "Hmmm, niestety błędna odpowiedź", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
                     AnswerIsUncorrected();
                 }
                 flag = true;
@@ -113,14 +103,17 @@ public class GetQuestion extends AppCompatActivity {
 
     private void AnswerIsCorrect() {
         showProgress(true);
+        questionResult = "Brawo, odpowiedź poprawna";
         Integer currency = Integer.parseInt(userPoints) + Integer.parseInt(points);
         userPoints = currency.toString();
         mAuthTask2 = new UpdatePoints(cookie, userPoints, points, userId);
         mAuthTask2.execute((Void) null);
     }
 
+
     private void AnswerIsUncorrected() {
         showProgress(true);
+        questionResult = "Hmmm, niestety błędna odpowiedź";
         Integer currency = Integer.parseInt(userPoints) - Integer.parseInt(points);
         userPoints = currency.toString();
         mAuthTask2 = new UpdatePoints(cookie, userPoints, "-" + points, userId);
@@ -129,7 +122,6 @@ public class GetQuestion extends AppCompatActivity {
 
 
     private String getUserAnswer() {
-
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.a:
                 return ("a");
@@ -145,52 +137,49 @@ public class GetQuestion extends AppCompatActivity {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-        mQuestionView.setVisibility(show ? View.GONE : View.VISIBLE);
-        mQuestionView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mQuestionView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
+        if (show) {
+            Loading loading = Loading.newInstance();
+            if (getSupportFragmentManager().findFragmentByTag("Loading") == null)
+                getSupportFragmentManager().beginTransaction().add(loading, "Loading").commit();
+        } else {
+            Loading loading = (Loading) getSupportFragmentManager().findFragmentByTag("Loading");
+            if (loading != null && loading.isVisible()) loading.dismiss();
+        }
     }
+
 
     public void setText(String text) {
         this.text = text;
     }
 
+
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer.toLowerCase();
     }
+
 
     public void setPoints(String points) {
         this.points = points;
     }
 
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if(FINISH){
+            finish();
+        }
+    }
+
+
     public class DownloadQuestion extends AsyncTask<Void, Void, Boolean> {
 
         private final String questionURL;
-        private String information = "";
+        private String error = "";
 
 
         DownloadQuestion(String cookie) {
             questionURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/get_question/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
-
-
         }
 
         @Override
@@ -213,11 +202,11 @@ public class GetQuestion extends AppCompatActivity {
 
                     } else return false;
                     if (questionId.equals("-1")) {
-                        information = "Dziś już odpowiadałeś na pytanie.";
+                        error = "Dziś już odpowiadałeś na pytanie.\n\nNie chcesz  czekać ?\nKliknij w przycisk (Omiń blokadę) i obejrzyj krótki filmik";
                         return false;
                     }
                     if (questionId.equals("-2")) {
-                        information = "Brak pytań.";
+                        error = "Brak pytań.";
                         return false;
                     }
                     return true;
@@ -242,21 +231,14 @@ public class GetQuestion extends AppCompatActivity {
                 textView.setText(text);
                 GetQuestion.super.setTitle("Do wygrania: " + points + " punktów");
 
+                FINISH = false;
+
             } else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(GetQuestion.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Uwaga");
-                dialog.setMessage("Błąd podczas pobierania pytania.\n\n" + information);
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
-                        finish();
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+
+                Information information = Information.newInstance("Błąd podczas pobierania pytania.\n\n" + error);
+                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
+
+                FINISH = true;
             }
         }
 
@@ -311,43 +293,23 @@ public class GetQuestion extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(GetQuestion.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Punkty");
-                dialog.setMessage("Dodano / odjęto punkty");
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
 
-                        Bundle conData = new Bundle();
-                        conData.putString("userPoints", userPoints);
-                        Intent intent = new Intent();
-                        intent.putExtras(conData);
-                        setResult(RESULT_OK, intent);
-                        finish();
+                Information information = Information.newInstance("Zaktualizowano punkty\n\n"+questionResult);
+                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
 
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+                Bundle conData = new Bundle();
+                conData.putString("userPoints", userPoints);
+                Intent intent = new Intent();
+                intent.putExtras(conData);
+                setResult(RESULT_OK, intent);
 
+                FINISH = true;
             } else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(GetQuestion.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Punkty");
-                dialog.setMessage("Błąd");
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
 
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+                Information information = Information.newInstance("Błąd dodawania punktów");
+                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
+
+                FINISH = false;
             }
         }
 
@@ -360,12 +322,3 @@ public class GetQuestion extends AppCompatActivity {
 
 
 }
-
-
-
-
-
-
-
-
-

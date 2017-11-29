@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">quizator</string>
+    <string name="app_name" translatable="false">Quizator</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -27,6 +27,7 @@
     <string name="email_or_username">Email or Username</string>
     <string name="title_activity_get_question">Get Question</string>
     <string name="ads_banner_main_id" translatable="false">ca-app-pub-9635712631261774/2875827085</string>
+    <string name="ads_reward_main_id" translatable="false">ca-app-pub-9635712631261774/7436762896</string>
     <string name="empty">None</string>
     <string name="procent_of_lvl_complete">Procent of lvl complete</string>
     <string name="login">Logged</string>

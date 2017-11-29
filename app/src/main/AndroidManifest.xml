@@ -3,6 +3,7 @@
     package="com.apps.szpansky.quizator">
 
     <!-- internet permission -->
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

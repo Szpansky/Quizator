@@ -1,15 +1,10 @@
 package com.apps.szpansky.quizator;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -20,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -31,8 +28,9 @@ import java.io.IOException;
 import java.net.URL;
 
 
-public class NewAccountActivity extends AppCompatActivity {
+public class NewAccountActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
 
+    private static boolean FINISH = false;
     private UserCreateAccountTask mAuthTask = null;
 
 
@@ -171,27 +169,22 @@ public class NewAccountActivity extends AppCompatActivity {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        if (show) {
+            Loading loading = Loading.newInstance();
+            if (getSupportFragmentManager().findFragmentByTag("Loading") == null)
+                getSupportFragmentManager().beginTransaction().add(loading, "Loading").commit();
+        } else {
+            Loading loading = (Loading) getSupportFragmentManager().findFragmentByTag("Loading");
+            if (loading != null && loading.isVisible()) loading.dismiss();
+        }
+    }
 
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+    if(FINISH){
+        finish();
+    }
     }
 
 
@@ -269,36 +262,13 @@ public class NewAccountActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(NewAccountActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Uwaga");
-                dialog.setMessage("Konto zostało utworzone, teraz możesz się logować");
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
-                        finish();
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
-
-
+                Information information = Information.newInstance("Konto zostało utworzone, teraz możesz się logować");
+                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
+                FINISH = true;
             } else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(NewAccountActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Uwaga");
-                dialog.setMessage(error);
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+                Information information = Information.newInstance("Błąd:\n" + error);
+                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
+                FINISH = false;
             }
         }
 
@@ -308,5 +278,7 @@ public class NewAccountActivity extends AppCompatActivity {
             showProgress(false);
         }
     }
+
+
 }
 

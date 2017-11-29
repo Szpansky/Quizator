@@ -1,16 +1,10 @@
 package com.apps.szpansky.quizator;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -21,6 +15,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.DialogsFragments.Loading;
+import com.apps.szpansky.quizator.SimpleData.UserData;
+import com.apps.szpansky.quizator.Tasks.RetrievePassword;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -35,7 +34,7 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
 
     private UserLoginTask mAuthTask = null;
-    private UserRetrievePassword mPasswordTask = null;
+    private RetrievePassword mPasswordTask = null;
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -112,8 +111,8 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mPasswordTask = new UserRetrievePassword(email);
-            mPasswordTask.execute((Void) null);
+            mPasswordTask = new RetrievePassword(email, getSupportFragmentManager());
+            mPasswordTask.execute();
         }
     }
 
@@ -167,133 +166,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
-
-
-    public class UserRetrievePassword extends AsyncTask<Void, Void, Boolean> {
-
-        private final String sendRetrievePasswordURL;
-
-        private final String mEmail;
-
-        UserRetrievePassword(String email) {
-            mEmail = email;
-            sendRetrievePasswordURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + mEmail;
+        if (show) {
+            Loading loading = Loading.newInstance();
+            if (getSupportFragmentManager().findFragmentByTag("Loading") == null)
+                getSupportFragmentManager().beginTransaction().add(loading, "Loading").commit();
+        } else {
+            Loading loading = (Loading) getSupportFragmentManager().findFragmentByTag("Loading");
+            if (loading != null && loading.isVisible()) loading.dismiss();
         }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            URL url;
-            try {
-                url = new URL(sendRetrievePasswordURL);
-                OkHttpClient client = new OkHttpClient();
-                Request.Builder builder = new Request.Builder();
-                Request request = builder.url(url).build();
-                Response respond = null;
-                respond = client.newCall(request).execute();
-                String json = respond.body().string();
-                try {
-                    JSONObject object = new JSONObject(json);
-
-                    if (object.getString("status").equals("ok")) {
-                        return true;
-                    } else return false;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return true;
-        }
-
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-            if (success) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Restart hasła");
-                dialog.setMessage("Twoje hasło zostało wysłane na podany adres email");
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
-            } else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Restart hasła");
-                dialog.setMessage("Konto nie istnieje");
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String sendLoginURL;
-
-        String cookie;
-
         private final String mEmail;
         private final String mPassword;
-        private String username;
-        private String nickname;
-        private String nicename;
-        private String email;
-        private String registered;
-        private String userId;
-        private String userPoints;
-        private String userAvatar;
         private String error = "";
-        private String userPointsNext;
-        private String rankNext;
-        private String rankName;
-
+        private UserData userData = new UserData();
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -315,18 +207,18 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(json);
 
                     if (object.getString("status").equals("ok")) {
-                        cookie = object.getString("cookie");
-                        userId = object.getJSONObject("user").getString("id");
-                        username = object.getJSONObject("user").getString("username");
-                        nicename = object.getJSONObject("user").getString("nicename");
-                        email = object.getJSONObject("user").getString("email");
-                        registered = object.getJSONObject("user").getString("registered");
-                        nickname = object.getJSONObject("user").getString("nickname");
-                        userPoints = object.getJSONObject("user").getString("points");
-                        userPointsNext = object.getJSONObject("user").getString("points_next");
-                        rankName = object.getJSONObject("user").getString("rank_name");
-                        rankNext = object.getJSONObject("user").getString("rank_next");
-                        userAvatar = object.getJSONObject("user").getString("avatar");
+                        userData.setCookie(object.getString("cookie"));
+                        userData.setUserId(object.getJSONObject("user").getString("id"));
+                        userData.setUsername(object.getJSONObject("user").getString("username"));
+                        userData.setNicename(object.getJSONObject("user").getString("nicename"));
+                        userData.setEmail(object.getJSONObject("user").getString("email"));
+                        userData.setRegistered(object.getJSONObject("user").getString("registered"));
+                        userData.setNickname(object.getJSONObject("user").getString("nickname"));
+                        userData.setUserPoints(object.getJSONObject("user").getString("points"));
+                        userData.setUserPointsNext(object.getJSONObject("user").getString("points_next"));
+                        userData.setRankName(object.getJSONObject("user").getString("rank_name"));
+                        userData.setRankNext(object.getJSONObject("user").getString("rank_next"));
+                        userData.setUserAvatar(object.getJSONObject("user").getString("avatar"));
 
                         return true;
                     } else {
@@ -351,33 +243,13 @@ public class LoginActivity extends AppCompatActivity {
 
             if (success) {
                 Intent startMain = new Intent(getBaseContext(), MainActivity.class);
-                startMain.putExtra("cookie", cookie);
-                startMain.putExtra("userId", userId);
-                startMain.putExtra("username", username);
-                startMain.putExtra("nicename", nicename);
-                startMain.putExtra("email", email);
-                startMain.putExtra("registered", registered);
-                startMain.putExtra("nickname", nickname);
-                startMain.putExtra("points", userPoints);
-                startMain.putExtra("points_next", userPointsNext);
-                startMain.putExtra("rank_name", rankName);
-                startMain.putExtra("rank_next", rankNext);
-                startMain.putExtra("userAvatar", userAvatar);
+                startMain.putExtra("userData", userData);
                 startActivityForResult(startMain, RESULT_FROM_MAIN);
             } else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-                dialog.setCancelable(false);
-                dialog.setTitle("Uwaga");
-                dialog.setMessage("Błąd połączenia. \n\n" + error);
-                dialog.setPositiveButton("Zamknij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showProgress(false);
-                    }
-                });
-                final AlertDialog alert = dialog.create();
-                alert.show();
+
+                Information information = Information.newInstance("Błąd połączenia.\n\n" + error);
+                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
+
             }
         }
 
