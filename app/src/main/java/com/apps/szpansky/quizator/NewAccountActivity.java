@@ -219,7 +219,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
                     JSONObject object = new JSONObject(json);
                     if (object.getString("status").equals("ok")) {
                         nonceValue = object.getString("nonce");
-                        registerURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/register/?insecure=cool&notify=none&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
+                        registerURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
 
                         url = new URL(registerURL);
                         client = new OkHttpClient();

@@ -88,9 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startQuestion() {
         Intent startQuestion = new Intent(getBaseContext(), GetQuestion.class);
-        startQuestion.putExtra("cookie", userData.getCookie());
-        startQuestion.putExtra("userPoints", userData.getUserPoints());
-        startQuestion.putExtra("userId", userData.getUserId());
+        startQuestion.putExtra("userData", userData);
         startActivityForResult(startQuestion, RESULT_FROM_QUESTION);
     }
 

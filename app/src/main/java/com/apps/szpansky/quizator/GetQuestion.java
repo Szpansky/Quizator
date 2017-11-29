@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
+import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -31,19 +32,20 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
     private static boolean FINISH = false;
     private DownloadQuestion mAuthTask = null;
-    private UpdatePoints mAuthTask2 = null;
+    private SendAnswer mAuthTask2 = null;
     boolean flag = false;
 
-    private String text;
-    private String correctAnswer;
+    private String question;
+
     private String points;
     private String userPoints;
-    private String userId;
-    private String cookie;
+
+
     private RadioGroup radioGroup;
-    public TextView textView;
-    private String questionId;
-    private String questionResult;
+    public TextView questionTextArea;
+
+
+    private UserData userData;
 
 
     @Override
@@ -59,16 +61,14 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            cookie = bundle.getString("cookie");
-            userPoints = bundle.getString("userPoints");
-            userId = bundle.getString("userId");
+            userData = (UserData) bundle.getSerializable("userData");
         }
 
-        textView = findViewById(R.id.question);
+        questionTextArea = findViewById(R.id.question);
 
 
         showProgress(true);
-        mAuthTask = new DownloadQuestion(cookie);
+        mAuthTask = new DownloadQuestion(userData.getCookie(), userData.getUserId());
         mAuthTask.execute((Void) null);
 
 
@@ -87,12 +87,9 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
         fab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
-                if (getUserAnswer().equals(correctAnswer)) {
-                    AnswerIsCorrect();
-                } else {
-                    AnswerIsUncorrected();
-                }
+                showProgress(true);
+                mAuthTask2 = new SendAnswer(userData.getCookie(), points, userData.getUserId(), getUserAnswer());
+                mAuthTask2.execute((Void) null);
                 flag = true;
                 return false;
             }
@@ -101,24 +98,6 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
     }
 
 
-    private void AnswerIsCorrect() {
-        showProgress(true);
-        questionResult = "Brawo, odpowiedź poprawna";
-        Integer currency = Integer.parseInt(userPoints) + Integer.parseInt(points);
-        userPoints = currency.toString();
-        mAuthTask2 = new UpdatePoints(cookie, userPoints, points, userId);
-        mAuthTask2.execute((Void) null);
-    }
-
-
-    private void AnswerIsUncorrected() {
-        showProgress(true);
-        questionResult = "Hmmm, niestety błędna odpowiedź";
-        Integer currency = Integer.parseInt(userPoints) - Integer.parseInt(points);
-        userPoints = currency.toString();
-        mAuthTask2 = new UpdatePoints(cookie, userPoints, "-" + points, userId);
-        mAuthTask2.execute((Void) null);
-    }
 
 
     private String getUserAnswer() {
@@ -149,13 +128,8 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
     }
 
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer.toLowerCase();
+    public void setTextQuestion(String question) {
+        this.question = question;
     }
 
 
@@ -176,9 +150,9 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
         private final String questionURL;
         private String error = "";
+        String questionId;
 
-
-        DownloadQuestion(String cookie) {
+        DownloadQuestion(String cookie, String userId) {
             questionURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/get_question/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
         }
 
@@ -196,8 +170,8 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
                     if (object.getString("status").equals("ok")) {
 
                         questionId = object.getJSONObject("pytanie").getString("id");
-                        setText(object.getJSONObject("pytanie").getString("tekst"));
-                        setCorrectAnswer(object.getJSONObject("pytanie").getString("odpowiedz"));
+                        setTextQuestion(object.getJSONObject("pytanie").getString("tekst"));
+
                         setPoints(object.getJSONObject("pytanie").getString("punkty"));
 
                     } else return false;
@@ -228,7 +202,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
             if (success) {
                 showProgress(false);
-                textView.setText(text);
+                questionTextArea.setText(question);
                 GetQuestion.super.setTitle("Do wygrania: " + points + " punktów");
 
                 FINISH = false;
@@ -250,17 +224,18 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
     }
 
 
-    public class UpdatePoints extends AsyncTask<Void, Void, Boolean> {
+    public class SendAnswer extends AsyncTask<Void, Void, Boolean> {
 
         private final String logURL;
         private final String update_game_url;
+        String questionResult;
 
 
-        UpdatePoints(String cookie, String userPoints, String points, String userId) {
+        SendAnswer(String cookie, String points, String userId, String userAnswer) {
 
             @SuppressLint("SimpleDateFormat") String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             logURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/put_log/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&points=" + points + "&date=" + date;
-            update_game_url = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/update_user_game/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&question_id=" + questionId + "&user_points=" + userPoints;
+            update_game_url = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
         }
 
         @Override
@@ -272,6 +247,16 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
                 Request request = builder.url(url).build();
                 Response respond = client.newCall(request).execute();
 
+                String json = respond.body().string();
+                try {
+                    JSONObject object = new JSONObject(json);
+                    if (object.getString("status").equals("ok")) {
+                        questionResult = (object.getString("informacja"));
+                    } else return false;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return false;
+                }
                 url = new URL(logURL);
                 client = new OkHttpClient();
                 builder = new Request.Builder();

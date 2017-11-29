@@ -28,7 +28,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 
-public class UserProfileFragment extends Fragment implements RewardedVideoAdListener{
+public class UserProfileFragment extends Fragment implements RewardedVideoAdListener {
 
     private static boolean REWARDED = false;
     private final int RESULT_FROM_QUESTION = 1;
@@ -50,7 +50,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     private RenewUserAnswer mPasswordTask = null;
 
 
-    public static UserProfileFragment newInstance(UserData userData){
+    public static UserProfileFragment newInstance(UserData userData) {
         UserProfileFragment userProfileFragment = new UserProfileFragment();
 
         Bundle bundle = new Bundle();
@@ -74,14 +74,14 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         userData = (UserData) getArguments().getSerializable("userData");
 
-        View view = inflater.inflate(R.layout.user_profile_fragment,container,false);
+        View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
 
         textUserLvl = view.findViewById(R.id.userLvl);
         textUserNextLvl = view.findViewById(R.id.userNextLvl);
-        textUserName =  view.findViewById(R.id.userName);
+        textUserName = view.findViewById(R.id.userName);
         textUserNextPoints = view.findViewById(R.id.userNextPoints);
         textUserPoints = view.findViewById(R.id.userPoints);
         imageView = view.findViewById(R.id.imageView);
@@ -114,7 +114,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     }
 
 
-    private void onButtonClick(){
+    private void onButtonClick() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +125,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             showProgress(true);
+                showProgress(true);
                 final Handler handler2 = new Handler();
                 handler2.postDelayed(new Runnable() {
                     @Override
@@ -190,9 +190,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
     private void startQuestion() {
         Intent startQuestion = new Intent(getActivity().getBaseContext(), GetQuestion.class);
-        startQuestion.putExtra("cookie", userData.getCookie());
-        startQuestion.putExtra("userPoints", userData.getUserPoints());
-        startQuestion.putExtra("userId", userData.getUserId());
+        startQuestion.putExtra("userData", userData);
         startActivityForResult(startQuestion, RESULT_FROM_QUESTION);
     }
 
@@ -215,10 +213,10 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
     @Override
     public void onRewardedVideoAdClosed() {
-        if (REWARDED){
-            mPasswordTask = new RenewUserAnswer(userData.getCookie(),userData.getUserId(),getActivity().getSupportFragmentManager());
+        if (REWARDED) {
+            mPasswordTask = new RenewUserAnswer(userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
             mPasswordTask.execute();
-        }else{
+        } else {
             showProgress(false);
         }
     }
