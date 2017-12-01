@@ -23,10 +23,7 @@ import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final int RESULT_FROM_QUESTION = 1;
-
     UserData userData;
-    TextView textUserPoints;
     Toolbar toolbar;
     ImageView thumbNail;
     DrawerLayout drawer;
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void startQuestion() {
         Intent startQuestion = new Intent(getBaseContext(), GetQuestion.class);
         startQuestion.putExtra("userData", userData);
-        startActivityForResult(startQuestion, RESULT_FROM_QUESTION);
+        startActivity(startQuestion);
     }
 
 
@@ -98,23 +95,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onRestart();
         setResult(RESULT_OK);
         finish();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case RESULT_FROM_QUESTION:
-                if (resultCode == RESULT_OK) {
-                    Bundle result = data.getExtras();
-                    if (result != null) {
-                        userData.setUserPoints(result.getString("userPoints"));
-                        userProfileFragment.userData.setUserPoints(result.getString("userPoints"));
-                    }
-                    userProfileFragment.setUserData();
-                }
-                break;
-        }
     }
 
 

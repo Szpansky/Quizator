@@ -12,10 +12,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:launchMode="singleTop"
         android:screenOrientation="portrait">
         <activity
             android:name="com.apps.szpansky.quizator.LoginActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,15 +29,18 @@
             android:name="com.apps.szpansky.quizator.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.apps.szpansky.quizator.NewAccountActivity"
             android:label="@string/title_activity_new_account"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.apps.szpansky.quizator.GetQuestion"
             android:label="@string/title_activity_get_question"
             android:theme="@style/AppTheme"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
     </application>
 

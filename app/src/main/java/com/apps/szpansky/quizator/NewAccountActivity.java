@@ -38,8 +38,8 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
     private EditText mPasswordView;
     private EditText mRePasswordView;
     private EditText mUserNameView;
-    private View mProgressView;
-    private View mLoginFormView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +81,8 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+
+
     }
 
 
@@ -151,7 +151,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuthTask = new UserCreateAccountTask(email, password, username, username, mLoginFormView);
+            mAuthTask = new UserCreateAccountTask(email, password, username);
             mAuthTask.execute((Void) null);
         }
     }
@@ -197,10 +197,10 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
         private String error;
 
 
-        private final String nonceURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
+        private final String nonceURL = "http://quizator.cba.pl/cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
         String registerURL;
 
-        UserCreateAccountTask(String email, String password, String username, String displayName, View view) {
+        UserCreateAccountTask(String email, String password, String username) {
             mEmail = email;
             mPassword = password;
             mUsername = username;
@@ -219,7 +219,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
                     JSONObject object = new JSONObject(json);
                     if (object.getString("status").equals("ok")) {
                         nonceValue = object.getString("nonce");
-                        registerURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
+                        registerURL = "http://quizator.cba.pl/cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
 
                         url = new URL(registerURL);
                         client = new OkHttpClient();

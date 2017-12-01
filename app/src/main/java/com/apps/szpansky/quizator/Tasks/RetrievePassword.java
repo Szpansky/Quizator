@@ -22,14 +22,11 @@ public class RetrievePassword extends AsyncTask<Void, Void, Boolean> {
 
     private final String sendRetrievePasswordURL;
 
-    private final String mEmail;
-
     private FragmentManager fragmentManager;
 
     public RetrievePassword(String email, FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
-        mEmail = email;
-        sendRetrievePasswordURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + email;
+        sendRetrievePasswordURL = "http://quizator.cba.pl/cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + email;
     }
 
 

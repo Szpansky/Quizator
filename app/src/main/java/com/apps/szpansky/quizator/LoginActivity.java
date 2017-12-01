@@ -38,8 +38,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
     public final int RESULT_FROM_MAIN = 50;
 
 
@@ -81,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
 
@@ -182,15 +178,11 @@ public class LoginActivity extends AppCompatActivity {
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String sendLoginURL;
-        private final String mEmail;
-        private final String mPassword;
         private String error = "";
         private UserData userData = new UserData();
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-            sendLoginURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + mEmail + "&password=" + mPassword;
+            sendLoginURL = "http://quizator.cba.pl/cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
         }
 
         @Override

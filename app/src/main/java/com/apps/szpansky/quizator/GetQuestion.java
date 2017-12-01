@@ -1,8 +1,6 @@
 package com.apps.szpansky.quizator;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,8 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class GetQuestion extends AppCompatActivity implements DialogInterface.OnDismissListener {
 
@@ -38,8 +35,6 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
     private String question;
 
     private String points;
-    private String userPoints;
-
 
     private RadioGroup radioGroup;
     public TextView questionTextArea;
@@ -88,7 +83,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
             @Override
             public boolean onLongClick(View v) {
                 showProgress(true);
-                mAuthTask2 = new SendAnswer(userData.getCookie(), points, userData.getUserId(), getUserAnswer());
+                mAuthTask2 = new SendAnswer(userData.getCookie(), userData.getUserId(), getUserAnswer());
                 mAuthTask2.execute((Void) null);
                 flag = true;
                 return false;
@@ -153,7 +148,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
         String questionId;
 
         DownloadQuestion(String cookie, String userId) {
-            questionURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/get_question/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+            questionURL = "http://quizator.cba.pl/cyj@n3k/user/get_question/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
         }
 
         @Override
@@ -226,16 +221,12 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
     public class SendAnswer extends AsyncTask<Void, Void, Boolean> {
 
-        private final String logURL;
         private final String update_game_url;
         String questionResult;
 
 
-        SendAnswer(String cookie, String points, String userId, String userAnswer) {
-
-            @SuppressLint("SimpleDateFormat") String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            logURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/put_log/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&points=" + points + "&date=" + date;
-            update_game_url = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
+        SendAnswer(String cookie, String userId, String userAnswer) {
+            update_game_url = "http://quizator.cba.pl/cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
         }
 
         @Override
@@ -257,12 +248,6 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
                     e.printStackTrace();
                     return false;
                 }
-                url = new URL(logURL);
-                client = new OkHttpClient();
-                builder = new Request.Builder();
-                request = builder.url(url).build();
-                respond = client.newCall(request).execute();
-
                 respond.body().close();
                 return true;
             } catch (IOException e) {
@@ -281,12 +266,6 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
                 Information information = Information.newInstance("Zaktualizowano punkty\n\n"+questionResult);
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
-
-                Bundle conData = new Bundle();
-                conData.putString("userPoints", userPoints);
-                Intent intent = new Intent();
-                intent.putExtras(conData);
-                setResult(RESULT_OK, intent);
 
                 FINISH = true;
             } else {

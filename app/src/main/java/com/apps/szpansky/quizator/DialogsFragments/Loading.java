@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,19 +17,12 @@ public class Loading extends DialogFragment {
 
     Activity activity;
     FragmentManager fragmentManager;
-    int orientation;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); // method for sdk 16 block rotation while loading
-        if (getActivity().getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0)
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        if (getActivity().getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_90)
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        if (getActivity().getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_270)
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 
-        orientation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         activity = getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
     }
@@ -56,13 +48,12 @@ public class Loading extends DialogFragment {
         super.onDismiss(dialog);
         Loading loading = (Loading) fragmentManager.findFragmentByTag("Loading");
 
-        if (orientation == activity.getWindowManager().getDefaultDisplay().getRotation()) {     //that loop prevents to change orientation when there's still some loading fragment
             if (loading != null) {
                 if (!loading.isVisible()) {
                     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);     //activity is fild in that class for prevent null point exception
                 }
             }
-        }
+
 
     }
 

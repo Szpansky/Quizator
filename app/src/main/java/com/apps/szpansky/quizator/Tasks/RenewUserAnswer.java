@@ -20,17 +20,12 @@ public class RenewUserAnswer extends AsyncTask<Void, Void, Boolean> {
 
     private final String renewUserAnswerURL;
 
-    private final String cookie;
-    private final String userId;
-
     private FragmentManager fragmentManager;
 
     public RenewUserAnswer(String cookie, String userId, FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
-        this.cookie = cookie;
-        this.userId = userId;
 
-        renewUserAnswerURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+        renewUserAnswerURL = "http://quizator.cba.pl/cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
     }
 
 
