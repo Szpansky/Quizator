@@ -42,28 +42,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="a)" />
+            android:text="@string/a_answer" />
 
         <RadioButton
             android:id="@+id/b"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="b)" />
+            android:text="@string/b_answer" />
 
         <RadioButton
             android:id="@+id/c"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="c)" />
+            android:text="@string/c_answer" />
 
         <RadioButton
             android:id="@+id/d"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="d)" />
+            android:text="@string/d_answer" />
 
     </RadioGroup>
 

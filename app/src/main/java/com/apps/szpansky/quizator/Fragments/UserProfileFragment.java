@@ -214,7 +214,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     @Override
     public void onRewardedVideoAdClosed() {
         if (REWARDED) {
-            mPasswordTask = new RenewUserAnswer(userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
+            mPasswordTask = new RenewUserAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
             mPasswordTask.execute();
         } else {
             showProgress(false);
@@ -234,6 +234,6 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
         showProgress(false);
-        Toast.makeText(getActivity(), "Błąd połaczenia lub wykorzystałeś dzienny limit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.ad_failed_to_load, Toast.LENGTH_SHORT).show();
     }
 }

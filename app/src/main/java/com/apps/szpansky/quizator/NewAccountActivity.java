@@ -47,31 +47,8 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
         setContentView(R.layout.activity_new_account);
         mEmailView = findViewById(R.id.emailRegister);
         mUserNameView = findViewById(R.id.userNameRegister);
-
-
         mPasswordView = findViewById(R.id.passwordRegister);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         mRePasswordView = findViewById(R.id.repasswordRegister);
-        mRePasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         Button mEmailSignInButton = findViewById(R.id.create_account_button_registe);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -80,8 +57,6 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
                 attemptLogin();
             }
         });
-
-
 
     }
 
@@ -197,7 +172,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
         private String error;
 
 
-        private final String nonceURL = "http://quizator.cba.pl/cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
+        private final String nonceURL = getString(R.string.site_address) + "cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
         String registerURL;
 
         UserCreateAccountTask(String email, String password, String username) {
@@ -219,7 +194,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
                     JSONObject object = new JSONObject(json);
                     if (object.getString("status").equals("ok")) {
                         nonceValue = object.getString("nonce");
-                        registerURL = "http://quizator.cba.pl/cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
+                        registerURL = getString(R.string.site_address) + "cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
 
                         url = new URL(registerURL);
                         client = new OkHttpClient();
@@ -266,7 +241,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
                 FINISH = true;
             } else {
-                Information information = Information.newInstance("Błąd:\n" + error);
+                Information information = Information.newInstance(getString(R.string.error)+"\n" + error);
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
                 FINISH = false;
             }

@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/progressText"
         android:layout_centerHorizontal="true"
-        android:text="@string/procent_of_lvl_complete" />
+        android:text="@string/percent_of_lvl_complete" />
 
     <ProgressBar
         android:id="@+id/progressBar3"
@@ -63,9 +63,7 @@
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
-
             android:layout_weight="6"
             android:orientation="vertical">
 
@@ -73,10 +71,7 @@
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-
                 android:layout_margin="1dp"
-
                 android:layout_weight="1"
                 android:background="@color/tableColorCell"
                 android:padding="@dimen/cell_padding"
@@ -106,7 +101,6 @@
             android:id="@+id/linearLayout7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -128,9 +122,7 @@
                 android:id="@+id/userLvl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_margin="1dp"
-
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryLight"
                 android:maxLength="8"
@@ -147,9 +139,7 @@
         <LinearLayout
             android:id="@+id/linearLayout6"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
-
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -287,7 +277,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_margin="@dimen/fab_margin"
-        android:text="Omiń blokadę" />
+        android:text="@string/skip_lock" />
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"

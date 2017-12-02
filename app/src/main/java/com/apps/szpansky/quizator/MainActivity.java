@@ -1,6 +1,8 @@
 package com.apps.szpansky.quizator;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
 
@@ -87,6 +89,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent startQuestion = new Intent(getBaseContext(), GetQuestion.class);
         startQuestion.putExtra("userData", userData);
         startActivity(startQuestion);
+    }
+
+
+    private void rateApp(){
+        Uri uri = Uri.parse("market://details?id="+ getBaseContext().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try{
+            startActivity(goToMarket);
+        }catch (ActivityNotFoundException e){
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://play.google.com/store/apps/details?id="+ getBaseContext().getPackageName())));
+        }
     }
 
 
@@ -122,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.action_settings) {
 
-            Information information = Information.newInstance("Informacje o aplikacji");
+            Information information = Information.newInstance(getString(R.string.about_app));
             getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
 
             return true;
@@ -144,6 +158,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             break;
             case R.id.nav_quest: {
                 startQuestion();
+            }
+            break;
+            case R.id.nav_rate_app: {
+                rateApp();
             }
             break;
         }

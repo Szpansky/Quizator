@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
+import com.apps.szpansky.quizator.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -22,10 +23,10 @@ public class RenewUserAnswer extends AsyncTask<Void, Void, Boolean> {
 
     private FragmentManager fragmentManager;
 
-    public RenewUserAnswer(String cookie, String userId, FragmentManager fragmentManager) {
+    public RenewUserAnswer(String siteAddress, String cookie, String userId, FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
 
-        renewUserAnswerURL = "http://quizator.cba.pl/cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+        renewUserAnswerURL = siteAddress + "cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
     }
 
 

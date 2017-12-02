@@ -1,20 +1,18 @@
 package com.apps.szpansky.quizator;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
@@ -47,16 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mEmailView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         Button retrievePassword = findViewById(R.id.retrieve_password_button);
         Button createAccountButton = findViewById(R.id.create_account_button);
@@ -107,8 +96,14 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mPasswordTask = new RetrievePassword(email, getSupportFragmentManager());
-            mPasswordTask.execute();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPasswordTask = new RetrievePassword(getString(R.string.site_address), email, getSupportFragmentManager());
+                    mPasswordTask.execute();
+                }
+            }, 300);
         }
     }
 
@@ -120,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         final String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -148,8 +143,14 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mAuthTask = new UserLoginTask(email, password);
+                    mAuthTask.execute((Void) null);
+                }
+            }, 300);
         }
     }
 
@@ -182,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
         private UserData userData = new UserData();
 
         UserLoginTask(String email, String password) {
-            sendLoginURL = "http://quizator.cba.pl/cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
+            sendLoginURL = getString(R.string.site_address) + "cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
         }
 
         @Override
@@ -240,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(startMain, RESULT_FROM_MAIN);
             } else {
 
-                Information information = Information.newInstance("Błąd połączenia.\n\n" + error);
+                Information information = Information.newInstance(getString(R.string.connection_error) + "\n\n" + error);
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
 
             }

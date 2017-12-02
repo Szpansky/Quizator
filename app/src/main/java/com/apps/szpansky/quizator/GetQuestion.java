@@ -3,6 +3,7 @@ package com.apps.szpansky.quizator;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -63,8 +64,15 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
 
         showProgress(true);
-        mAuthTask = new DownloadQuestion(userData.getCookie(), userData.getUserId());
-        mAuthTask.execute((Void) null);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAuthTask = new DownloadQuestion(userData.getCookie(), userData.getUserId());
+                mAuthTask.execute((Void) null);
+            }
+        }, 300);
+
 
 
         FloatingActionButton fab = findViewById(R.id.fab_question);
@@ -72,7 +80,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
             @Override
             public void onClick(View view) {
                 if (!flag) {
-                    Snackbar.make(view, "Przytrzymaj aby odpowiedzieć", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, R.string.hold_for_answer, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
                 } else flag = false;
@@ -83,16 +91,20 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
             @Override
             public boolean onLongClick(View v) {
                 showProgress(true);
-                mAuthTask2 = new SendAnswer(userData.getCookie(), userData.getUserId(), getUserAnswer());
-                mAuthTask2.execute((Void) null);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAuthTask2 = new SendAnswer(userData.getCookie(), userData.getUserId(), getUserAnswer());
+                        mAuthTask2.execute((Void) null);
+                    }
+                }, 300);
                 flag = true;
                 return false;
             }
         });
 
     }
-
-
 
 
     private String getUserAnswer() {
@@ -135,7 +147,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if(FINISH){
+        if (FINISH) {
             finish();
         }
     }
@@ -148,7 +160,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
         String questionId;
 
         DownloadQuestion(String cookie, String userId) {
-            questionURL = "http://quizator.cba.pl/cyj@n3k/user/get_question/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+            questionURL = getString(R.string.site_address) + "cyj@n3k/user/get_question/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
         }
 
         @Override
@@ -171,11 +183,11 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
                     } else return false;
                     if (questionId.equals("-1")) {
-                        error = "Dziś już odpowiadałeś na pytanie.\n\nNie chcesz  czekać ?\nKliknij w przycisk (Omiń blokadę) i obejrzyj krótki filmik";
+                        error = getString(R.string.question_error_daily_lock);
                         return false;
                     }
                     if (questionId.equals("-2")) {
-                        error = "Brak pytań.";
+                        error = getString(R.string.question_error_no_more_questions);
                         return false;
                     }
                     return true;
@@ -196,15 +208,13 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
             showProgress(false);
 
             if (success) {
-                showProgress(false);
                 questionTextArea.setText(question);
                 GetQuestion.super.setTitle("Do wygrania: " + points + " punktów");
 
                 FINISH = false;
 
             } else {
-
-                Information information = Information.newInstance("Błąd podczas pobierania pytania.\n\n" + error);
+                Information information = Information.newInstance(getString(R.string.question_error) + "\n\n" + error);
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
 
                 FINISH = true;
@@ -226,7 +236,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
 
         SendAnswer(String cookie, String userId, String userAnswer) {
-            update_game_url = "http://quizator.cba.pl/cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
+            update_game_url = getString(R.string.site_address) + "cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
         }
 
         @Override
@@ -264,7 +274,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
             if (success) {
 
-                Information information = Information.newInstance("Zaktualizowano punkty\n\n"+questionResult);
+                Information information = Information.newInstance("Zaktualizowano punkty\n\n" + questionResult);
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
 
                 FINISH = true;

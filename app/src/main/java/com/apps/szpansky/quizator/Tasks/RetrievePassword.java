@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
 
+import com.apps.szpansky.quizator.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -24,9 +25,9 @@ public class RetrievePassword extends AsyncTask<Void, Void, Boolean> {
 
     private FragmentManager fragmentManager;
 
-    public RetrievePassword(String email, FragmentManager fragmentManager) {
+    public RetrievePassword(String siteAddress, String email, FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
-        sendRetrievePasswordURL = "http://quizator.cba.pl/cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + email;
+        sendRetrievePasswordURL = siteAddress + "cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + email;
     }
 
 

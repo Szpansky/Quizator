@@ -25,11 +25,25 @@
 
     <string name="get_question">Pobierz pytanie</string>
     <string name="empty">Brak</string>
-    <string name="procent_of_lvl_complete">Procent ukończenia poziomu:</string>
+    <string name="percent_of_lvl_complete">Procent ukończenia poziomu:</string>
     <string name="login">Zalogowany</string>
     <string name="lvl">Poziom</string>
     <string name="points">Punkty</string>
     <string name="next_lvl_is">Następny poziom to:</string>
     <string name="need_points">Wymaga punktów:</string>
     <string name="log_out">Wyloguj</string>
+    <string name="close">Zamknij</string>
+    <string name="about_app">W aplikacji możesz zdobywaćpunkty, poprzez odpowiadanie na dzienne pytania. Dzięki możliwości przycisku \"omiń blokadę\" możesz odpowiadać maksymalnie na 10 pytań jednego dnia. Powodzenia</string>
+    <string name="skip_lock">Omiń blokadę</string>
+    <string name="ad_failed_to_load">Błąd połaczenia lub wykorzystałeś dzienny limit</string>
+    <string name="question_error_daily_lock">Wróc jutro by odpowiedzieć, lub kliknij w przycisk "omiń blokadę" i obejrzyj krótki filmik</string>
+    <string name="question_error_no_more_questions">Niestety pula pytań się skończyła</string>
+    <string name="question_error">Błąd podczas pobierania pytania</string>
+    <string name="connection_error">Błąd połączenia</string>
+    <string name="hold_for_answer">Przytrzymaj by udzielić odpowiedzi</string>
+    <string name="error">Błąd</string>
+    <string name="account_created_info">Konto zostało utworzone, teraz możesz się logować</string>
+    <string name="rate_this_app">Oceń aplikację</string>
+    <string name="utilities">Narzędzia</string>
+
 </resources>

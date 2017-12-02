@@ -9,8 +9,12 @@
             android:title="@string/get_question" />
     </group>
 
-    <item android:title="Narzędzia">
+    <item android:title="@string/utilities">
         <menu>
+            <item
+                android:id="@+id/nav_rate_app"
+                android:icon="@mipmap/ic_star_rate_black_18dp"
+                android:title="@string/rate_this_app" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@mipmap/ic_account_box_black_24dp"

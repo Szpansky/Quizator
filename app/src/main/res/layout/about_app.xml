@@ -18,7 +18,7 @@
         android:foregroundGravity="center"
         android:gravity="center"
         android:padding="@dimen/fab_margin"
-        android:text="informacje"
+        android:text="@string/about_app"
         app:layout_constraintBottom_toTopOf="@+id/close"
         tools:layout_editor_absoluteX="163dp" />
 
@@ -31,7 +31,7 @@
         android:layout_centerHorizontal="true"
         android:background="@android:drawable/editbox_background_normal"
         android:foregroundGravity="center"
-        android:text="close"
+        android:text="@string/close"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="502dp" />
 </RelativeLayout>
