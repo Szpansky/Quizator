@@ -19,6 +19,7 @@ import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.RetrievePassword;
 
+import com.apps.szpansky.quizator.Tools.MySharedPrefereces;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -45,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mEmailView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
+
+        mEmailView.setText(MySharedPrefereces.getLogin(this));
+        mPasswordView.setText(MySharedPrefereces.getPassword(this));
 
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         Button retrievePassword = findViewById(R.id.retrieve_password_button);
@@ -143,6 +147,10 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
+
+            MySharedPrefereces.setLogin(this,mEmailView.getText().toString().trim());
+            MySharedPrefereces.setPassword(this,mPasswordView.getText().toString().trim());
+
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

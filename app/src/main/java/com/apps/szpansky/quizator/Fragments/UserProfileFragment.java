@@ -19,6 +19,7 @@ import com.apps.szpansky.quizator.GetQuestion;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.RenewUserAnswer;
+import com.apps.szpansky.quizator.Tools.MySharedPrefereces;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -70,7 +71,6 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
