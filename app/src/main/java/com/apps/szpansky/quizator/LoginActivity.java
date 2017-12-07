@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
@@ -19,7 +21,7 @@ import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.RetrievePassword;
 
-import com.apps.szpansky.quizator.Tools.MySharedPrefereces;
+import com.apps.szpansky.quizator.Tools.MySharedPreferences;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     public final int RESULT_FROM_MAIN = 50;
+    private CheckBox saveLoginData;
 
 
     @Override
@@ -47,8 +50,32 @@ public class LoginActivity extends AppCompatActivity {
         mEmailView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
 
-        mEmailView.setText(MySharedPrefereces.getLogin(this));
-        mPasswordView.setText(MySharedPrefereces.getPassword(this));
+        mEmailView.setText(MySharedPreferences.getLogin(this));
+        mPasswordView.setText(MySharedPreferences.getPassword(this));
+
+        saveLoginData = findViewById(R.id.save_login_data);
+        saveLoginData.setChecked(MySharedPreferences.getSaveLoginDataIsSet(this));
+
+
+        saveLoginData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MySharedPreferences.setSaveLoginData(getBaseContext(),isChecked);
+                if (isChecked){
+                    MySharedPreferences.setLogin(getBaseContext(),"");
+                    MySharedPreferences.setPassword(getBaseContext(),"");
+                }else{
+                    MySharedPreferences.setLogin(getBaseContext(),mEmailView.getText().toString());
+                    MySharedPreferences.setPassword(getBaseContext(),mPasswordView.getText().toString());
+                }
+            }
+        });
+
+
+        if (MySharedPreferences.getSaveLoginDataIsSet(this)) {
+            mEmailView.setText(MySharedPreferences.getLogin(this));
+            mPasswordView.setText(MySharedPreferences.getPassword(this));
+        }
 
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         Button retrievePassword = findViewById(R.id.retrieve_password_button);
@@ -148,8 +175,8 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             showProgress(true);
 
-            MySharedPrefereces.setLogin(this,mEmailView.getText().toString().trim());
-            MySharedPrefereces.setPassword(this,mPasswordView.getText().toString().trim());
+            MySharedPreferences.setLogin(this,mEmailView.getText().toString().trim());
+            MySharedPreferences.setPassword(this,mPasswordView.getText().toString().trim());
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

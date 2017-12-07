@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/bc_szkola_myslenia"
-    android:backgroundTintMode="add"
+    android:background="@drawable/bc_quizator"
     android:gravity="bottom"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,37 +10,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/thumbNail"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/textViewNavEmail"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_weight="1"
-        android:background="@android:drawable/editbox_background"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
-
-    <TextView
-        android:id="@+id/textViewNavEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_weight="1"
-        android:text="android.studio@android.com"
-        android:textColor="@color/colorPrimaryText" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbNail"
-        android:layout_toEndOf="@+id/thumbNail"
-        android:layout_toRightOf="@+id/thumbNail"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimaryText" />
-
+        android:textSize="30sp" />
 </RelativeLayout>

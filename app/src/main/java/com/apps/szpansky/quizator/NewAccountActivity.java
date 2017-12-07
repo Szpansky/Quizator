@@ -2,6 +2,7 @@ package com.apps.szpansky.quizator;
 
 
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -72,9 +73,9 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
         mRePasswordView.setError(null);
 
 
-        String username = mUserNameView.getText().toString();
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String username = mUserNameView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
         String rePassword = mRePasswordView.getText().toString();
 
         boolean cancel = false;
@@ -126,8 +127,14 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuthTask = new UserCreateAccountTask(email, password, username);
-            mAuthTask.execute((Void) null);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mAuthTask = new UserCreateAccountTask(email, password, username);
+                    mAuthTask.execute((Void) null);
+                }
+            }, 300);
         }
     }
 

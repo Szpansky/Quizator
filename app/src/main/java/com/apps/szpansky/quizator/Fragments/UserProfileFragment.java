@@ -19,10 +19,8 @@ import com.apps.szpansky.quizator.GetQuestion;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.RenewUserAnswer;
-import com.apps.szpansky.quizator.Tools.MySharedPrefereces;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
@@ -32,23 +30,16 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 public class UserProfileFragment extends Fragment implements RewardedVideoAdListener {
 
     private static boolean REWARDED = false;
+
     private final int RESULT_FROM_QUESTION = 1;
 
     public UserData userData;
-    TextView textUserPoints;
-    TextView textUserNextPoints;
-    TextView textUserLvl;
-    TextView textUserNextLvl;
-    TextView textUserName;
-    AdView adView;
-    ImageView imageView;
-    Button fab;
-    Button fab2;
-    ProgressBar progressBar;
-    TextView completeLvl;
-    Loading loading;
+
+    ImageView userAvatar;
+    Button skipLockButton, getQuestionButton;
+    ProgressBar progressLvlLoading;
+    TextView progressLvlText, userCurrentRank, userNextRank;
     private RewardedVideoAd mAd;
-    private RenewUserAnswer mPasswordTask = null;
 
 
     public static UserProfileFragment newInstance(UserData userData) {
@@ -77,19 +68,19 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         userData = (UserData) getArguments().getSerializable("userData");
 
-        View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
+        View view = inflater.inflate(R.layout.user_info_main, container, false);
 
-        textUserLvl = view.findViewById(R.id.userLvl);
-        textUserNextLvl = view.findViewById(R.id.userNextLvl);
-        textUserName = view.findViewById(R.id.userName);
-        textUserNextPoints = view.findViewById(R.id.userNextPoints);
-        textUserPoints = view.findViewById(R.id.userPoints);
-        imageView = view.findViewById(R.id.imageView);
-        fab = view.findViewById(R.id.fab);
-        fab2 = view.findViewById(R.id.fab2);
-        progressBar = view.findViewById(R.id.progressBar3);
-        completeLvl = view.findViewById(R.id.progressText);
-        adView = view.findViewById(R.id.adView);
+
+        userAvatar = view.findViewById(R.id.user_avatar);
+        userCurrentRank = view.findViewById(R.id.user_current_rank);
+        userNextRank = view.findViewById(R.id.user_next_rank);
+        skipLockButton = view.findViewById(R.id.skip_lock_button);
+        getQuestionButton = view.findViewById(R.id.get_question_button);
+
+        progressLvlLoading = view.findViewById(R.id.progress_lvl);
+        progressLvlText = view.findViewById(R.id.progress_txt);
+      //  adView = view.findViewById(R.id.adView);
+
 
         setUserData();
         setAds();
@@ -109,20 +100,28 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
         } else {
             Loading loading = (Loading) getActivity().getSupportFragmentManager().findFragmentByTag("Loading");
             if (loading != null && loading.isVisible()) loading.dismiss();
+            loading = null;
         }
 
     }
 
 
+    private void startQuestion() {
+        Intent startQuestion = new Intent(getActivity().getBaseContext(), GetQuestion.class);
+        startQuestion.putExtra("userData", userData);
+        startActivityForResult(startQuestion, RESULT_FROM_QUESTION);
+    }
+
+
     private void onButtonClick() {
-        fab.setOnClickListener(new View.OnClickListener() {
+        getQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 startQuestion();
             }
         });
 
-        fab2.setOnClickListener(new View.OnClickListener() {
+        skipLockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showProgress(true);
@@ -140,19 +139,15 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
 
     private void setAds() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+     //   AdRequest adRequest = new AdRequest.Builder().build();
+      //  adView.loadAd(adRequest);
     }
 
 
     public void setUserData() {
-        Glide.with(this).load(userData.getUserAvatar()).into(imageView);
-
-        textUserLvl.setText(userData.getRankName());
-        textUserNextLvl.setText(userData.getRankNext());
-        textUserPoints.setText(userData.getUserPoints());
-        textUserName.setText(userData.getUsername());
-        textUserNextPoints.setText(userData.getUserPointsNext());
+        Glide.with(this).load(userData.getUserAvatar()).into(userAvatar);
+        userCurrentRank.setText(userData.getRankName());
+        userNextRank.setText(userData.getRankNext());
 
         Integer userPointsInt;
         Integer userPointsNextInt;
@@ -176,22 +171,10 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
         if (userRating >= 100) userRating = 100;
         if (userRating <= 0) userRating = 0;
 
-
-        progressBar.setProgress(userRating);
-        progressBar.setScaleY(9f);
-
+        progressLvlLoading.setProgress(userRating);
 
         String progress = userRating.toString() + "%";
-        completeLvl.setText(progress);
-
-
-    }
-
-
-    private void startQuestion() {
-        Intent startQuestion = new Intent(getActivity().getBaseContext(), GetQuestion.class);
-        startQuestion.putExtra("userData", userData);
-        startActivityForResult(startQuestion, RESULT_FROM_QUESTION);
+        progressLvlText.setText(progress);
     }
 
 
@@ -214,7 +197,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     @Override
     public void onRewardedVideoAdClosed() {
         if (REWARDED) {
-            mPasswordTask = new RenewUserAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
+            RenewUserAnswer mPasswordTask = new RenewUserAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
             mPasswordTask.execute();
         } else {
             showProgress(false);

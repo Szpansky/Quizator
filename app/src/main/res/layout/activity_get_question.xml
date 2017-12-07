@@ -31,14 +31,4 @@
         app:fabSize="normal"
         app:srcCompat="@mipmap/ic_done_white_24dp" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="50dp"
-        android:visibility="gone" />
-
 </android.support.design.widget.CoordinatorLayout>

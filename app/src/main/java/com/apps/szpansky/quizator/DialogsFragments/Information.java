@@ -32,7 +32,7 @@ public class Information extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.about_app,null);
+        View view = inflater.inflate(R.layout.dialog_information,null);
 
         Button close = view.findViewById(R.id.close);
         TextView textView = view.findViewById(R.id.text);

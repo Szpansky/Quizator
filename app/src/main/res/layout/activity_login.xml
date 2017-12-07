@@ -75,6 +75,12 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/save_login_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zapamiętaj mnie" />
+
             <Button
                 android:id="@+id/retrieve_password_button"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"

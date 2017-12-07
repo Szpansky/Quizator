@@ -1,6 +1,9 @@
 package com.apps.szpansky.quizator;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -39,10 +43,11 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
     private RadioGroup radioGroup;
     public TextView questionTextArea;
-
+    private String link;
 
     private UserData userData;
 
+    Button startVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +79,6 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
         }, 300);
 
 
-
         FloatingActionButton fab = findViewById(R.id.fab_question);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +108,15 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
             }
         });
 
+
+        startVideo = findViewById(R.id.start_video);
+        startVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSite(getLink());
+            }
+        });
+
     }
 
 
@@ -119,6 +132,18 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
                 return ("d");
             default:
                 return "x";
+        }
+    }
+
+
+    private void openSite(String siteUrl) {
+        Uri uri = Uri.parse(siteUrl);
+        Intent openSite = new Intent(Intent.ACTION_VIEW, uri);
+        openSite.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(openSite);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl)));
         }
     }
 
@@ -144,6 +169,13 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
         this.points = points;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
@@ -178,7 +210,7 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
 
                         questionId = object.getJSONObject("pytanie").getString("id");
                         setTextQuestion(object.getJSONObject("pytanie").getString("tekst"));
-
+                        setLink(object.getJSONObject("pytanie").getString("link"));
                         setPoints(object.getJSONObject("pytanie").getString("punkty"));
 
                     } else return false;
@@ -208,8 +240,28 @@ public class GetQuestion extends AppCompatActivity implements DialogInterface.On
             showProgress(false);
 
             if (success) {
-                questionTextArea.setText(question);
+                String[] mQuestion = question.split("\n");
+                String questionText = "";
                 GetQuestion.super.setTitle("Do wygrania: " + points + " punktów");
+
+
+                if (!getLink().equals("-1")) {
+                    startVideo.setVisibility(View.VISIBLE);
+
+                } else {
+                    startVideo.setVisibility(View.GONE);
+                }
+
+
+                for (int i = 0; i < mQuestion.length; i++) {
+                    if (mQuestion[i].contains("https://")) {
+                        int startId = mQuestion[i].indexOf("https://");
+                        mQuestion[i] = mQuestion[i].substring(0, startId);
+                    }
+                    questionText = questionText + mQuestion[i] + "\n\n";
+                }
+
+                questionTextArea.setText(questionText);
 
                 FINISH = false;
 

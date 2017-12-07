@@ -18,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.Fragments.UserProfileAppBarFragment;
 import com.apps.szpansky.quizator.Fragments.UserProfileFragment;
 import com.apps.szpansky.quizator.SimpleData.UserData;
+import com.apps.szpansky.quizator.Tools.MySharedPreferences;
 import com.bumptech.glide.Glide;
 
 
@@ -27,25 +29,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     UserData userData;
     Toolbar toolbar;
-    ImageView thumbNail;
     DrawerLayout drawer;
-    TextView textViewNavEmail;
 
     UserProfileFragment userProfileFragment;
+    UserProfileAppBarFragment userProfileAppBarFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getBundle();
         setViews();
         setToolbar();
-        getBundle();
-        setUserData();
+
 
         userProfileFragment = UserProfileFragment.newInstance(userData);
+        userProfileAppBarFragment = UserProfileAppBarFragment.newInstance(userData);
 
         getSupportFragmentManager().beginTransaction().add(R.id.content_main,  userProfileFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_app_bar, userProfileAppBarFragment).commit();
+
+        if (!MySharedPreferences.getMainTutorialWasShown(this)) {
+            MySharedPreferences.setMainTutorialWasShown(this, true);
+            showTutorial();
+        }
+    }
+
+
+    private void showTutorial() {
+        Information information = Information.newInstance(getString(R.string.about_app));
+        getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
     }
 
 
@@ -62,11 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setViews() {
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Masz: "+ userData.getUserPoints()+" pkt");
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View navView = navigationView.getHeaderView(0);
-        thumbNail = navView.findViewById(R.id.thumbNail);
-        textViewNavEmail = navView.findViewById(R.id.textViewNavEmail);
     }
 
 
@@ -78,11 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
-
-    private void setUserData() {
-        Glide.with(this).load(userData.getUserAvatar()).into(thumbNail);
-        textViewNavEmail.setText(userData.getEmail());
-    }
 
 
     private void startQuestion() {
