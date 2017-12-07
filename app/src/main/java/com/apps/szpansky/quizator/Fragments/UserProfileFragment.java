@@ -38,7 +38,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     ImageView userAvatar;
     Button skipLockButton, getQuestionButton;
     ProgressBar progressLvlLoading;
-    TextView progressLvlText, userCurrentRank, userNextRank, userPreviousRank, rankPointsNext;
+    TextView progressLvlText, userCurrentRank, userNextRank, userPreviousRank, rankPointsNext, userUserName;
     private RewardedVideoAd mAd;
 
 
@@ -72,6 +72,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
 
         userAvatar = view.findViewById(R.id.user_avatar);
+        userUserName = view.findViewById(R.id.user_username);
         userCurrentRank = view.findViewById(R.id.user_current_rank);
         userPreviousRank = view.findViewById(R.id.user_previous_rank);
         userNextRank = view.findViewById(R.id.user_next_rank);
@@ -153,6 +154,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
         userPreviousRank.setText(userData.getRankPrev());
         String nextRankInfo = getString(R.string.need)+"\n" + userData.getUserPointsNext() + " "+getString(R.string.points_shortcut);
         rankPointsNext.setText(nextRankInfo);
+        userUserName.setText(userData.getUsername());
 
         Integer userPointsInt;
         Integer userPointsNextInt;

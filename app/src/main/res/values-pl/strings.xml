@@ -33,7 +33,7 @@
     <string name="need_points">Wymaga punktów:</string>
     <string name="log_out">Wyloguj</string>
     <string name="close">Zamknij</string>
-    <string name="about_app">W aplikacji możesz zdobywać punkty, poprzez odpowiadanie na dzienne pytania. Dzięki możliwości przycisku \"omiń blokadę\" możesz odpowiadać maksymalnie na 10 pytań jednego dnia. Powodzenia :)</string>
+    <string name="about_app">W aplikacji możesz zdobywać punkty, poprzez odpowiadanie na dzienne pytania. Dzięki możliwości przycisku \"omiń blokadę\" możesz odpowiadać maksymalnie na 10 pytań jednego dnia. Pamiętaj, błędna odpowiedź to ujemne punkty\n Powodzenia :)</string>
     <string name="skip_lock">Omiń blokadę</string>
     <string name="ad_failed_to_load">Błąd połaczenia lub wykorzystałeś dzienny limit</string>
     <string name="question_error_daily_lock">Wróc jutro by odpowiedzieć, lub kliknij w przycisk "omiń blokadę" i obejrzyj krótki filmik</string>
