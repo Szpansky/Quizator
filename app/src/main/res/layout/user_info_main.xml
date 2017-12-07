@@ -20,7 +20,7 @@
             android:id="@+id/user_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Marcin"
+            android:text="@string/empty"
             android:textAlignment="center"
             android:textSize="36sp" />
 
@@ -28,13 +28,14 @@
             android:id="@+id/user_avatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"
+            android:contentDescription="@string/empty" />
 
         <TextView
             android:id="@+id/user_current_rank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Buldożer"
+            android:text="@string/empty"
             android:textAlignment="center"
             android:textSize="30sp" />
 
@@ -87,7 +88,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/progress_lvl"
                 android:layout_toStartOf="@+id/progress_lvl"
-                android:text="Żaba"
+                android:text="@string/empty"
                 android:textSize="18sp" />
 
             <TextView
@@ -97,8 +98,32 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/progress_lvl"
                 android:layout_toRightOf="@+id/progress_lvl"
-                android:text="Busiarz"
+                android:text="@string/empty"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@android:drawable/edit_text"
+                android:text="@string/previous_lvl"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/rank_points_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@android:drawable/edit_text"
+                android:text="@string/empty"
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

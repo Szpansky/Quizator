@@ -7,6 +7,8 @@
     <string name="b_answer" translatable="false">b)</string>
     <string name="c_answer" translatable="false">c)</string>
     <string name="d_answer" translatable="false">d)</string>
+    <string name="points_shortcut" translatable="false">pkt</string>
+    <string name="need">Need</string>
 
     <string name="about_app">About app</string>
 
@@ -54,5 +56,9 @@
     <string name="account_created_info">Account has been created, now you can log in</string>
     <string name="utilities">Utilities</string>
     <string name="rate_this_app">Rate this app</string>
+    <string name="show_video">"Open Video"</string>
+    <string name="previous_lvl">Previous\\nlvl</string>
+    <string name="add_new_question">Add new question</string>
+    <string name="remember_me">Remember me</string>
 
 </resources>

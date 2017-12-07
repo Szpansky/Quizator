@@ -14,9 +14,18 @@ public class UserData implements Serializable {
     private String userPoints;
     private String userPointsNext;
     private String rankName;
+    private String rankPrev;
     private String rankNext;
     private String userAvatar;
     private String pointsCurrentRank;
+
+    public String getRankPrev() {
+        return rankPrev;
+    }
+
+    public void setRankPrev(String rankPrev) {
+        this.rankPrev = rankPrev;
+    }
 
     public String getPointsCurrentRank() {
         return pointsCurrentRank;

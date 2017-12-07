@@ -38,7 +38,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     ImageView userAvatar;
     Button skipLockButton, getQuestionButton;
     ProgressBar progressLvlLoading;
-    TextView progressLvlText, userCurrentRank, userNextRank;
+    TextView progressLvlText, userCurrentRank, userNextRank, userPreviousRank, rankPointsNext;
     private RewardedVideoAd mAd;
 
 
@@ -73,7 +73,9 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
         userAvatar = view.findViewById(R.id.user_avatar);
         userCurrentRank = view.findViewById(R.id.user_current_rank);
+        userPreviousRank = view.findViewById(R.id.user_previous_rank);
         userNextRank = view.findViewById(R.id.user_next_rank);
+        rankPointsNext = view.findViewById(R.id.rank_points_next);
         skipLockButton = view.findViewById(R.id.skip_lock_button);
         getQuestionButton = view.findViewById(R.id.get_question_button);
 
@@ -148,6 +150,9 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
         Glide.with(this).load(userData.getUserAvatar()).into(userAvatar);
         userCurrentRank.setText(userData.getRankName());
         userNextRank.setText(userData.getRankNext());
+        userPreviousRank.setText(userData.getRankPrev());
+        String nextRankInfo = getString(R.string.need)+"\n" + userData.getUserPointsNext() + " "+getString(R.string.points_shortcut);
+        rankPointsNext.setText(nextRankInfo);
 
         Integer userPointsInt;
         Integer userPointsNextInt;
@@ -162,8 +167,6 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
             userPointsNextInt = 1;
             userPointsCurrentRankInt = 0;
         }
-
-        if (userPointsNextInt == 0) userPointsNextInt = 1;
 
 
         Integer userRating = (((userPointsInt - userPointsCurrentRankInt) * 100) / (userPointsNextInt - userPointsCurrentRankInt));

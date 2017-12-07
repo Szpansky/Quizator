@@ -246,6 +246,7 @@ public class LoginActivity extends AppCompatActivity {
                         userData.setUserPointsNext(object.getJSONObject("user").getString("points_next"));
                         userData.setPointsCurrentRank(object.getJSONObject("user").getString("points_current_rank"));
                         userData.setRankName(object.getJSONObject("user").getString("rank_name"));
+                        userData.setRankPrev(object.getJSONObject("user").getString("rank_prev"));
                         userData.setRankNext(object.getJSONObject("user").getString("rank_next"));
                         userData.setUserAvatar(object.getJSONObject("user").getString("avatar"));
 
