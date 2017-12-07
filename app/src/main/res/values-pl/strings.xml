@@ -46,8 +46,9 @@
     <string name="rate_this_app">Oceń aplikację</string>
     <string name="utilities">Narzędzia</string>
     <string name="show_video">Odtwórz film</string>
-    <string name="previous_lvl">Poprzedni\\npoziom</string>
+    <string name="previous_lvl">Poprzedni\npoziom</string>
     <string name="add_new_question">Dodaj nowe pytanie</string>
     <string name="remember_me">Zapamiętaj mnie</string>
+    <string name="need">Potrzeba</string>
 
 </resources>
