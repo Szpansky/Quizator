@@ -36,13 +36,16 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
     private final int RESULT_FROM_QUESTION = 1;
 
-    public UserData userData;
+    UserData userData;
+    QuestionData questionData;
 
     ImageView userAvatar;
     Button skipLockButton, getQuestionButton;
     ProgressBar progressLvlLoading;
     TextView progressLvlText, userCurrentRank, userNextRank, userPreviousRank, rankPointsNext, userUserName;
     private RewardedVideoAd mAd;
+    RenewUserAnswer renewUserAnswer;
+    GetQuestion getQuestion;
 
 
     public static UserProfileFragment newInstance(UserData userData) {
@@ -112,11 +115,11 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     private void startQuestion() {
-        final QuestionData questionData = new QuestionData();
+        questionData = new QuestionData();
 
-        @SuppressLint("StaticFieldLeak")
-        GetQuestion getQuestion = new GetQuestion(userData, questionData, getActivity().getSupportFragmentManager()) {
+        getQuestion = new GetQuestion(getString(R.string.site_address), userData, questionData, getActivity().getSupportFragmentManager()) {
             @Override
             public void onSuccessExecute() {
                 System.out.println(questionData.getText());
@@ -229,8 +232,8 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
     @Override
     public void onRewardedVideoAdClosed() {
         if (REWARDED) {
-            RenewUserAnswer mPasswordTask = new RenewUserAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
-            mPasswordTask.execute();
+            renewUserAnswer = new RenewUserAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getActivity().getSupportFragmentManager());
+            renewUserAnswer.execute();
         } else {
             showProgress(false);
         }

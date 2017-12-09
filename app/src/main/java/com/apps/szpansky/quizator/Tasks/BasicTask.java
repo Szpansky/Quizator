@@ -67,7 +67,6 @@ public abstract class BasicTask extends AsyncTask<Void, Void, Boolean> {
                 }
             }, 300);
 
-
         }
     }
 

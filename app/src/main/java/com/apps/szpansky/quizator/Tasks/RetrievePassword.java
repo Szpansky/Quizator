@@ -41,7 +41,7 @@ public class RetrievePassword extends BasicTask {
 
                 if (object.getString("status").equals("ok")) {
                     return true;
-                } else{
+                } else {
                     setError("Konto nie istnieje");
                     return false;
                 }

@@ -8,13 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
@@ -39,7 +36,6 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
     private EditText mPasswordView;
     private EditText mRePasswordView;
     private EditText mUserNameView;
-
 
 
     @Override
@@ -164,9 +160,9 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-    if(FINISH){
-        finish();
-    }
+        if (FINISH) {
+            finish();
+        }
     }
 
 
@@ -248,7 +244,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
                 FINISH = true;
             } else {
-                Information information = Information.newInstance(getString(R.string.error)+"\n" + error);
+                Information information = Information.newInstance(getString(R.string.error) + "\n" + error);
                 getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
                 FINISH = false;
             }

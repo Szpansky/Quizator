@@ -1,10 +1,8 @@
 package com.apps.szpansky.quizator;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.AsyncTask;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,26 +14,18 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.apps.szpansky.quizator.DialogsFragments.Information;
-import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.RetrievePassword;
 
+import com.apps.szpansky.quizator.Tasks.UserLogin;
 import com.apps.szpansky.quizator.Tools.MySharedPreferences;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private UserLoginTask mAuthTask = null;
-    private RetrievePassword mPasswordTask = null;
+    RetrievePassword mPasswordTask = null;
+    UserLogin userLogin = null;
+
+    UserData userData;
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -103,10 +93,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void attemptResetPassword() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         mEmailView.setError(null);
         final String email = mEmailView.getText().toString();
 
@@ -132,9 +118,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
@@ -166,19 +149,9 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
-
             MySharedPreferences.setLogin(this, mEmailView.getText().toString().trim());
             MySharedPreferences.setPassword(this, mPasswordView.getText().toString().trim());
-
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mAuthTask = new UserLoginTask(email, password);
-                    mAuthTask.execute((Void) null);
-                }
-            }, 300);
+            newLoginTask();
         }
     }
 
@@ -191,120 +164,33 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void showProgress(final boolean show) {
-        if (show) {
-            Loading loading = Loading.newInstance();
-            if (getSupportFragmentManager().findFragmentByTag("Loading") == null)
-                getSupportFragmentManager().beginTransaction().add(loading, "Loading").commit();
-        } else {
-            Loading loading = (Loading) getSupportFragmentManager().findFragmentByTag("Loading");
-            if (loading != null && loading.isVisible()) loading.dismiss();
-        }
-
-    }
-
-
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String sendLoginURL;
-        private String error = "";
-        private UserData userData = new UserData();
-
-        UserLoginTask(String email, String password) {
-            sendLoginURL = getString(R.string.site_address) + "cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                URL url = new URL(sendLoginURL);
-                OkHttpClient client = new OkHttpClient();
-                Request.Builder builder = new Request.Builder();
-                Request request = builder.url(url).build();
-                Response respond = client.newCall(request).execute();
-                String json = respond.body().string();
-
-                try {
-                    JSONObject object = new JSONObject(json);
-
-                    if (object.getString("status").equals("ok")) {
-                        userData.setCookie(object.getString("cookie"));
-                        userData.setUserId(object.getJSONObject("user").getString("id"));
-                        userData.setUsername(object.getJSONObject("user").getString("username"));
-                        userData.setNicename(object.getJSONObject("user").getString("nicename"));
-                        userData.setEmail(object.getJSONObject("user").getString("email"));
-                        userData.setRegistered(object.getJSONObject("user").getString("registered"));
-                        userData.setNickname(object.getJSONObject("user").getString("nickname"));
-                        userData.setUserPoints(object.getJSONObject("user").getString("points"));
-                        userData.setUserPointsNext(object.getJSONObject("user").getString("points_next"));
-                        userData.setPointsCurrentRank(object.getJSONObject("user").getString("points_current_rank"));
-                        userData.setRankName(object.getJSONObject("user").getString("rank_name"));
-                        userData.setRankPrev(object.getJSONObject("user").getString("rank_prev"));
-                        userData.setRankNext(object.getJSONObject("user").getString("rank_next"));
-                        userData.setUserAvatar(object.getJSONObject("user").getString("avatar"));
-
-                        return true;
-                    } else {
-                        error = object.getString("error");
-                        return false;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Intent startMain = new Intent(getBaseContext(), MainActivity.class);
-                startMain.putExtra("userData", userData);
-                startActivityForResult(startMain, RESULT_FROM_MAIN);
-            } else {
-
-                Information information = Information.newInstance(getString(R.string.connection_error) + "\n\n" + error);
-                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-
-
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RESULT_FROM_MAIN:
                 if (resultCode == RESULT_OK) {
-
-                    String email = mEmailView.getText().toString();
-                    String password = mPasswordView.getText().toString();
-
-                    showProgress(true);
-                    mAuthTask = new UserLoginTask(email, password);
-                    mAuthTask.execute((Void) null);
-
+                    newLoginTask();
                 }
                 break;
         }
+    }
 
+    @SuppressLint("StaticFieldLeak")
+    private void newLoginTask() {
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
 
+        userData = new UserData();
+        userLogin = new UserLogin(getString(R.string.site_address), email, password, userData, getSupportFragmentManager()) {
+            @Override
+            protected void onSuccessExecute() {
+                Intent startMain = new Intent(getBaseContext(), MainActivity.class);
+                startMain.putExtra("userData", userData);
+                startActivityForResult(startMain, RESULT_FROM_MAIN);
+            }
+        };
+        userLogin.execute((Void) null);
     }
 }
 

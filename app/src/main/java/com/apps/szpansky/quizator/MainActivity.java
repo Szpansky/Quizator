@@ -26,7 +26,10 @@ import com.apps.szpansky.quizator.Tools.MySharedPreferences;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    GetQuestion getQuestion;
+
     UserData userData;
+    QuestionData questionData;
     Toolbar toolbar;
     DrawerLayout drawer;
 
@@ -40,12 +43,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getBundle();
         setViews();
         setToolbar();
-
+        questionData = new QuestionData();
 
         userProfileFragment = UserProfileFragment.newInstance(userData);
         userProfileAppBarFragment = UserProfileAppBarFragment.newInstance(userData);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.content_main,  userProfileFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_main, userProfileFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.content_app_bar, userProfileAppBarFragment).commit();
 
         if (!MySharedPreferences.getMainTutorialWasShown(this)) {
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setViews() {
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Masz: "+ userData.getUserPoints()+" pkt");
+        toolbar.setTitle("Masz: " + userData.getUserPoints() + " pkt");
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -89,12 +92,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
+    @SuppressLint("StaticFieldLeak")
     private void startQuestion() {
-        final QuestionData questionData = new QuestionData();
-
-        @SuppressLint("StaticFieldLeak")
-        GetQuestion getQuestion = new GetQuestion(userData,questionData, getSupportFragmentManager()) {
+        questionData = new QuestionData();
+        getQuestion = new GetQuestion(getString(R.string.site_address), userData, questionData, getSupportFragmentManager()) {
             @Override
             public void onSuccessExecute() {
                 System.out.println(questionData.getText());
@@ -109,14 +110,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void rateApp(){
-        Uri uri = Uri.parse("market://details?id="+ getBaseContext().getPackageName());
+    private void rateApp() {
+        Uri uri = Uri.parse("market://details?id=" + getBaseContext().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        try{
+        try {
             startActivity(goToMarket);
-        }catch (ActivityNotFoundException e){
-            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://play.google.com/store/apps/details?id="+ getBaseContext().getPackageName())));
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getBaseContext().getPackageName())));
         }
     }
 

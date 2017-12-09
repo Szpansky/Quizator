@@ -41,19 +41,20 @@ public class RenewUserAnswer extends BasicTask {
 
                 if (object.getString("status").equals("ok")) {
                     return true;
-                } else{
+                } else {
                     setError("Błędne konto");
                     return false;
                 }
             } catch (JSONException e) {
                 setError("Błąd pobierania danych");
                 e.printStackTrace();
+                return false;
             }
         } catch (IOException e) {
             setError("Brak połączenia");
             e.printStackTrace();
+            return false;
         }
-        return true;
     }
 
 

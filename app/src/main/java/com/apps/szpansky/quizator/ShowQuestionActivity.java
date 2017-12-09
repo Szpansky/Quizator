@@ -1,41 +1,32 @@
 package com.apps.szpansky.quizator;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.apps.szpansky.quizator.DialogsFragments.Information;
-import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
+import com.apps.szpansky.quizator.Tasks.SendAnswer;
 
 
 public class ShowQuestionActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
 
+    SendAnswer sendAnswer;
+
     private static boolean FINISH = false;
 
-    private SendAnswer mAuthTask2 = null;
     boolean flag = false;
 
     FloatingActionButton sendAnswerButton;
@@ -55,6 +46,9 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_question);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         getBundle();
         setViews();
         onButtonClick();
@@ -62,7 +56,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
     }
 
 
-    private void getBundle(){
+    private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             userData = (UserData) bundle.getSerializable("userData");
@@ -70,7 +64,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         }
     }
 
-    private void setViews(){
+    private void setViews() {
         startVideo = findViewById(R.id.start_video);
         sendAnswerButton = findViewById(R.id.fab_question);
         questionTextArea = findViewById(R.id.question);
@@ -81,7 +75,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         answerD = findViewById(R.id.d);
     }
 
-    private void onButtonClick(){
+    private void onButtonClick() {
         startVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,18 +84,17 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         });
 
         sendAnswerButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @SuppressLint("StaticFieldLeak")
             @Override
             public boolean onLongClick(View v) {
-                showProgress(true);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                sendAnswer = new SendAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getUserAnswer(), getSupportFragmentManager()) {
                     @Override
-                    public void run() {
-                        mAuthTask2 = new SendAnswer(userData.getCookie(), userData.getUserId(), getUserAnswer());
-                        mAuthTask2.execute((Void) null);
+                    protected void onSuccessExecute() {
+                        super.onSuccessExecute();
+                        FINISH = true;
                     }
-                }, 300);
-                flag = true;
+                };
+                sendAnswer.execute((Void) null);
                 return false;
             }
         });
@@ -119,7 +112,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
 
     }
 
-    private void setContent(){
+    private void setContent() {
         String[] mQuestion = questionData.getText().split("\n");
         ShowQuestionActivity.super.setTitle("Do wygrania: " + questionData.getPoints() + " punktów");
 
@@ -174,90 +167,11 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
     }
 
 
-    private void showProgress(final boolean show) {
-        if (show) {
-            Loading loading = Loading.newInstance();
-            if (getSupportFragmentManager().findFragmentByTag("Loading") == null)
-                getSupportFragmentManager().beginTransaction().add(loading, "Loading").commit();
-        } else {
-            Loading loading = (Loading) getSupportFragmentManager().findFragmentByTag("Loading");
-            if (loading != null && loading.isVisible()) loading.dismiss();
-        }
-    }
-
-
     @Override
     public void onDismiss(DialogInterface dialog) {
         if (FINISH) {
             finish();
         }
     }
-
-
-    public class SendAnswer extends AsyncTask<Void, Void, Boolean> {
-
-        private final String update_game_url;
-        String questionResult;
-
-
-        SendAnswer(String cookie, String userId, String userAnswer) {
-            update_game_url = getString(R.string.site_address) + "cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                URL url = new URL(update_game_url);
-                OkHttpClient client = new OkHttpClient();
-                Request.Builder builder = new Request.Builder();
-                Request request = builder.url(url).build();
-                Response respond = client.newCall(request).execute();
-
-                String json = respond.body().string();
-                try {
-                    JSONObject object = new JSONObject(json);
-                    if (object.getString("status").equals("ok")) {
-                        questionResult = (object.getString("informacja"));
-                    } else return false;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-                respond.body().close();
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask2 = null;
-            showProgress(false);
-
-            if (success) {
-
-                Information information = Information.newInstance("Zaktualizowano punkty\n\n" + questionResult);
-                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
-
-                FINISH = true;
-            } else {
-
-                Information information = Information.newInstance("Błąd dodawania punktów");
-                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
-
-                FINISH = false;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask2 = null;
-            showProgress(false);
-        }
-    }
-
 
 }

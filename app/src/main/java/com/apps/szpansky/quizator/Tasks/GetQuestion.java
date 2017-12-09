@@ -22,8 +22,8 @@ public abstract class GetQuestion extends BasicTask {
 
     private String questionURL;
 
-    public GetQuestion(UserData userData, QuestionData questionData, FragmentManager fragmentManager) {
-        questionURL = "http://lukasz3.eradon.pl/g5/cyj@n3k/user/get_question/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
+    protected GetQuestion(String siteAddress, UserData userData, QuestionData questionData, FragmentManager fragmentManager) {
+        questionURL = siteAddress + "cyj@n3k/user/get_question/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
         this.questionData = questionData;
         setFragmentManager(fragmentManager);
     }
@@ -47,7 +47,7 @@ public abstract class GetQuestion extends BasicTask {
                     questionData.setLink(object.getJSONObject("pytanie").getString("link"));
                     questionData.setPoints(object.getJSONObject("pytanie").getString("punkty"));
 
-                } else{
+                } else {
                     setError("Problem podczas pobierania danych");
                     return false;
                 }
@@ -75,7 +75,7 @@ public abstract class GetQuestion extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        Information information = Information.newInstance("Pobrano pytanie:\n"+ questionData.getText());
+        Information information = Information.newInstance("Pobrano pytanie:\n" + questionData.getText());
         getFragmentManager().beginTransaction().add(information, "Information").commit();
 
     }
