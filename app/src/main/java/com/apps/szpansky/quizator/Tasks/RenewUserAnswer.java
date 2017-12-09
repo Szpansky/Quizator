@@ -1,11 +1,8 @@
 package com.apps.szpansky.quizator.Tasks;
 
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
-import com.apps.szpansky.quizator.DialogsFragments.Loading;
-import com.apps.szpansky.quizator.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -17,29 +14,14 @@ import java.io.IOException;
 import java.net.URL;
 
 
-public class RenewUserAnswer extends AsyncTask<Void, Void, Boolean> {
+public class RenewUserAnswer extends BasicTask {
 
     private final String renewUserAnswerURL;
 
-    private FragmentManager fragmentManager;
 
     public RenewUserAnswer(String siteAddress, String cookie, String userId, FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-
+        setFragmentManager(fragmentManager);
         renewUserAnswerURL = siteAddress + "cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
-    }
-
-
-    private void showProgress(final boolean show) {
-        if (show) {
-            Loading loading = Loading.newInstance();
-            if (fragmentManager.findFragmentByTag("Loading") == null)
-                fragmentManager.beginTransaction().add(loading, "Loading").commit();
-        } else {
-            Loading loading = (Loading) fragmentManager.findFragmentByTag("Loading");
-            if (loading != null && loading.isVisible()) loading.dismiss();
-        }
-
     }
 
 
@@ -59,30 +41,27 @@ public class RenewUserAnswer extends AsyncTask<Void, Void, Boolean> {
 
                 if (object.getString("status").equals("ok")) {
                     return true;
-                } else return false;
+                } else{
+                    setError("Błędne konto");
+                    return false;
+                }
             } catch (JSONException e) {
+                setError("Błąd pobierania danych");
                 e.printStackTrace();
             }
         } catch (IOException e) {
+            setError("Brak połączenia");
             e.printStackTrace();
         }
         return true;
     }
 
+
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        showProgress(false);
-        if (aBoolean) {
-            Information information = Information.newInstance("Teraz znów możesz odpowiadać");
-            fragmentManager.beginTransaction().add(information, "Information").commit();
-        } else {
-            Information information = Information.newInstance("Niestety wystąpił błąd");
-            fragmentManager.beginTransaction().add(information, "Information").commit();
-        }
-
+    protected void onSuccessExecute() {
+        Information information = Information.newInstance("Teraz znów możesz odpowiadać");
+        getFragmentManager().beginTransaction().add(information, "Information").commit();
     }
-
-
 }
 
 

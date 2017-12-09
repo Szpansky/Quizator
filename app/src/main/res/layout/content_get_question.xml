@@ -6,75 +6,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.apps.szpansky.quizator.GetQuestion"
+    tools:context="com.apps.szpansky.quizator.ShowQuestionActivity"
     tools:showIn="@layout/activity_get_question">
 
-    <ScrollView
-        android:id="@+id/scrollView3"
+
+    <TextView
+        android:id="@+id/question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/radioGroup"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@android:drawable/editbox_background">
-
-        <TextView
-            android:id="@+id/question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        android:background="@android:drawable/editbox_background"
+        android:text="@string/empty" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:background="@android:drawable/editbox_background"
-        android:orientation="horizontal">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/question"
+        android:layout_marginBottom="@dimen/after_question_margin"
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/a"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/a_answer" />
+            android:background="@android:drawable/editbox_background"
+            android:text="@string/empty"
+            android:textColor="@color/colorSecondaryText" />
 
         <RadioButton
             android:id="@+id/b"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/b_answer" />
+            android:background="@android:drawable/editbox_background"
+            android:text="@string/empty"
+            android:textColor="@color/colorSecondaryText" />
 
         <RadioButton
             android:id="@+id/c"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/c_answer" />
+            android:background="@android:drawable/editbox_background"
+            android:text="@string/empty"
+            android:textColor="@color/colorSecondaryText" />
 
         <RadioButton
             android:id="@+id/d"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/d_answer" />
+            android:background="@android:drawable/editbox_background"
+            android:text="@string/empty"
+            android:textColor="@color/colorSecondaryText" />
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/start_video"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="@string/show_video"
-        android:visibility="gone" />
+        <Button
+            android:id="@+id/start_video"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:text="@string/show_video"
+            android:visibility="gone" />
+
 
 </RelativeLayout>

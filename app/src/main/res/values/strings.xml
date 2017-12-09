@@ -3,10 +3,6 @@
     <string name="site_address" translatable="false">http://lukasz3.eradon.pl/g5/</string>
     <string name="ads_banner_main_id" translatable="false">ca-app-pub-9635712631261774/2875827085</string>
     <string name="ads_reward_main_id" translatable="false">ca-app-pub-9635712631261774/7436762896</string>
-    <string name="a_answer" translatable="false">a)</string>
-    <string name="b_answer" translatable="false">b)</string>
-    <string name="c_answer" translatable="false">c)</string>
-    <string name="d_answer" translatable="false">d)</string>
     <string name="points_shortcut" translatable="false">pkt</string>
     <string name="need">Need</string>
 

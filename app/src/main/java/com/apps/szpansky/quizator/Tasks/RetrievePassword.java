@@ -1,13 +1,9 @@
 package com.apps.szpansky.quizator.Tasks;
 
+
 import android.support.v4.app.FragmentManager;
 
-import android.os.AsyncTask;
-
 import com.apps.szpansky.quizator.DialogsFragments.Information;
-import com.apps.szpansky.quizator.DialogsFragments.Loading;
-
-import com.apps.szpansky.quizator.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -19,28 +15,13 @@ import java.io.IOException;
 import java.net.URL;
 
 
-public class RetrievePassword extends AsyncTask<Void, Void, Boolean> {
+public class RetrievePassword extends BasicTask {
 
     private final String sendRetrievePasswordURL;
 
-    private FragmentManager fragmentManager;
-
     public RetrievePassword(String siteAddress, String email, FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
+        setFragmentManager(fragmentManager);
         sendRetrievePasswordURL = siteAddress + "cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + email;
-    }
-
-
-    private void showProgress(final boolean show) {
-        if (show){
-            Loading loading = Loading.newInstance();
-            if (fragmentManager.findFragmentByTag("Loading") == null)
-                fragmentManager.beginTransaction().add(loading, "Loading").commit();
-        }else {
-            Loading loading = (Loading) fragmentManager.findFragmentByTag("Loading");
-            if (loading != null && loading.isVisible()) loading.dismiss();
-        }
-
     }
 
 
@@ -60,30 +41,28 @@ public class RetrievePassword extends AsyncTask<Void, Void, Boolean> {
 
                 if (object.getString("status").equals("ok")) {
                     return true;
-                } else return false;
+                } else{
+                    setError("Konto nie istnieje");
+                    return false;
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
+                setError("Błąd połączenia");
+                return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
+            setError("Brak połączenia");
+            return false;
         }
-        return true;
     }
 
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        showProgress(false);
-        if (aBoolean) {
-            Information information = Information.newInstance("Twoje hasło zostało wysłane na podany adres email");
-            fragmentManager.beginTransaction().add(information, "Information").commit();
-        } else {
-            Information information = Information.newInstance("Konto nie isnieje");
-            fragmentManager.beginTransaction().add(information, "Information").commit();
-        }
-
+    protected void onSuccessExecute() {
+        Information information = Information.newInstance("Hasło zostało wysłane na podany adres");
+        getFragmentManager().beginTransaction().add(information, "Information").commit();
     }
-
 }
 
 

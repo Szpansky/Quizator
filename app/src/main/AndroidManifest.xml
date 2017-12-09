@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:launchMode="singleTop"
-        android:screenOrientation="portrait">
+        android:screenOrientation="portrait"
+        android:fullBackupContent="true">
         <activity
             android:name="com.apps.szpansky.quizator.LoginActivity"
             android:label="@string/app_name"
@@ -37,7 +38,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.apps.szpansky.quizator.GetQuestion"
+            android:name="com.apps.szpansky.quizator.ShowQuestionActivity"
             android:label="@string/title_activity_get_question"
             android:theme="@style/AppTheme"
             android:launchMode="singleTop"

@@ -1,11 +1,11 @@
 package com.apps.szpansky.quizator;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,15 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.Fragments.UserProfileAppBarFragment;
 import com.apps.szpansky.quizator.Fragments.UserProfileFragment;
+import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
+import com.apps.szpansky.quizator.Tasks.GetQuestion;
 import com.apps.szpansky.quizator.Tools.MySharedPreferences;
-import com.bumptech.glide.Glide;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,9 +91,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void startQuestion() {
-        Intent startQuestion = new Intent(getBaseContext(), GetQuestion.class);
-        startQuestion.putExtra("userData", userData);
-        startActivity(startQuestion);
+        final QuestionData questionData = new QuestionData();
+
+        @SuppressLint("StaticFieldLeak")
+        GetQuestion getQuestion = new GetQuestion(userData,questionData, getSupportFragmentManager()) {
+            @Override
+            public void onSuccessExecute() {
+                System.out.println(questionData.getText());
+                Intent startQuestion = new Intent(getBaseContext(), ShowQuestionActivity.class);
+                startQuestion.putExtra("questionData", questionData);
+                startQuestion.putExtra("userData", userData);
+                startActivity(startQuestion);
+            }
+        };
+        getQuestion.execute((Void) null);
+
     }
 
 

@@ -60,13 +60,13 @@ public class LoginActivity extends AppCompatActivity {
         saveLoginData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MySharedPreferences.setSaveLoginData(getBaseContext(),isChecked);
-                if (isChecked){
-                    MySharedPreferences.setLogin(getBaseContext(),"");
-                    MySharedPreferences.setPassword(getBaseContext(),"");
-                }else{
-                    MySharedPreferences.setLogin(getBaseContext(),mEmailView.getText().toString());
-                    MySharedPreferences.setPassword(getBaseContext(),mPasswordView.getText().toString());
+                MySharedPreferences.setSaveLoginData(getBaseContext(), isChecked);
+                if (isChecked) {
+                    MySharedPreferences.setLogin(getBaseContext(), "");
+                    MySharedPreferences.setPassword(getBaseContext(), "");
+                } else {
+                    MySharedPreferences.setLogin(getBaseContext(), mEmailView.getText().toString());
+                    MySharedPreferences.setPassword(getBaseContext(), mPasswordView.getText().toString());
                 }
             }
         });
@@ -126,15 +126,8 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mPasswordTask = new RetrievePassword(getString(R.string.site_address), email, getSupportFragmentManager());
-                    mPasswordTask.execute();
-                }
-            }, 300);
+            mPasswordTask = new RetrievePassword(getString(R.string.site_address), email, getSupportFragmentManager());
+            mPasswordTask.execute();
         }
     }
 
@@ -175,8 +168,8 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             showProgress(true);
 
-            MySharedPreferences.setLogin(this,mEmailView.getText().toString().trim());
-            MySharedPreferences.setPassword(this,mPasswordView.getText().toString().trim());
+            MySharedPreferences.setLogin(this, mEmailView.getText().toString().trim());
+            MySharedPreferences.setPassword(this, mPasswordView.getText().toString().trim());
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

@@ -1,5 +1,6 @@
 package com.apps.szpansky.quizator.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
-import com.apps.szpansky.quizator.GetQuestion;
+import com.apps.szpansky.quizator.ShowQuestionActivity;
 import com.apps.szpansky.quizator.R;
+import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
+import com.apps.szpansky.quizator.Tasks.GetQuestion;
 import com.apps.szpansky.quizator.Tasks.RenewUserAnswer;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
@@ -82,7 +85,7 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
         progressLvlLoading = view.findViewById(R.id.progress_lvl);
         progressLvlText = view.findViewById(R.id.progress_txt);
-      //  adView = view.findViewById(R.id.adView);
+        //  adView = view.findViewById(R.id.adView);
 
 
         setUserData();
@@ -110,9 +113,21 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
 
     private void startQuestion() {
-        Intent startQuestion = new Intent(getActivity().getBaseContext(), GetQuestion.class);
-        startQuestion.putExtra("userData", userData);
-        startActivityForResult(startQuestion, RESULT_FROM_QUESTION);
+        final QuestionData questionData = new QuestionData();
+
+        @SuppressLint("StaticFieldLeak")
+        GetQuestion getQuestion = new GetQuestion(userData, questionData, getActivity().getSupportFragmentManager()) {
+            @Override
+            public void onSuccessExecute() {
+                System.out.println(questionData.getText());
+                Intent startQuestion = new Intent(getActivity().getBaseContext(), ShowQuestionActivity.class);
+                startQuestion.putExtra("questionData", questionData);
+                startQuestion.putExtra("userData", userData);
+                startActivity(startQuestion);
+            }
+        };
+        getQuestion.execute((Void) null);
+
     }
 
 
@@ -142,17 +157,29 @@ public class UserProfileFragment extends Fragment implements RewardedVideoAdList
 
 
     private void setAds() {
-     //   AdRequest adRequest = new AdRequest.Builder().build();
-      //  adView.loadAd(adRequest);
+        //   AdRequest adRequest = new AdRequest.Builder().build();
+        //  adView.loadAd(adRequest);
     }
 
+    private void setTextSize(String textSize, TextView textField) {
+        if (textSize.length() > 5) {
+            textField.setTextSize(14);
+            if (textSize.length() > 8) {
+                textField.setTextSize(12);
+            }
+        } else {
+            textField.setTextSize(18);
+        }
+    }
 
     public void setUserData() {
         Glide.with(this).load(userData.getUserAvatar()).into(userAvatar);
+        setTextSize(userData.getRankPrev(), userPreviousRank);
         userCurrentRank.setText(userData.getRankName());
+        setTextSize(userData.getRankNext(), userNextRank);
         userNextRank.setText(userData.getRankNext());
         userPreviousRank.setText(userData.getRankPrev());
-        String nextRankInfo = getString(R.string.need)+"\n" + userData.getUserPointsNext() + " "+getString(R.string.points_shortcut);
+        String nextRankInfo = getString(R.string.need) + "\n" + userData.getUserPointsNext() + " " + getString(R.string.points_shortcut);
         rankPointsNext.setText(nextRankInfo);
         userUserName.setText(userData.getUsername());
 
