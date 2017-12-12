@@ -1,8 +1,10 @@
 package com.apps.szpansky.quizator.Tasks;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -19,9 +21,9 @@ public class RenewUserAnswer extends BasicTask {
     private final String renewUserAnswerURL;
 
 
-    public RenewUserAnswer(String siteAddress, String cookie, String userId, FragmentManager fragmentManager) {
-        super(fragmentManager);
-        renewUserAnswerURL = siteAddress + "cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+    public RenewUserAnswer(String cookie, String userId, FragmentManager fragmentManager, Context context) {
+        super(fragmentManager, context);
+        renewUserAnswerURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
     }
 
 
@@ -42,16 +44,16 @@ public class RenewUserAnswer extends BasicTask {
                 if (object.getString("status").equals("ok")) {
                     return true;
                 } else {
-                    setError("Błędne konto");
+                    setError(getContext().getString(R.string.info_incorrect_account));
                     return false;
                 }
             } catch (JSONException e) {
-                setError("Błąd pobierania danych");
+                setError(getContext().getString(R.string.error_when_downloading));
                 e.printStackTrace();
                 return false;
             }
         } catch (IOException e) {
-            setError("Brak połączenia");
+            setError(getContext().getString(R.string.connection_error));
             e.printStackTrace();
             return false;
         }
@@ -60,25 +62,7 @@ public class RenewUserAnswer extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        Information information = Information.newInstance("Teraz znów możesz odpowiadać");
+        Information information = Information.newInstance(getContext().getString(R.string.info_now_you_can_answer));
         getFragmentManager().beginTransaction().add(information, "Information").commit();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

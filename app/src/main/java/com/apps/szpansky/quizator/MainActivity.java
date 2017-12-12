@@ -33,14 +33,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     UserData userData;
     QuestionData questionData;
+
     Toolbar toolbar;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     DrawerLayout drawer;
 
     UserProfileFragment userProfileFragment;
     AppBarFragment appBarFragment;
     LoadAdFragment loadAdFragment;
-
-    CollapsingToolbarLayout collapsingToolbarLayout;
 
 
     @Override
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startQuestion() {
         questionData = new QuestionData();
-        getQuestion = new GetQuestion(getString(R.string.site_address), userData, questionData, getSupportFragmentManager(), getBaseContext());
+        getQuestion = new GetQuestion(userData, questionData, getSupportFragmentManager(), getApplicationContext());
         getQuestion.execute((Void) null);
     }
 
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getBaseContext().getPackageName())));
         }
     }
+
 
     /**
      * Method override for simply change title of activity
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestart() {
         super.onRestart();
-        refreshUserData = new RefreshUserData(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), userData, getSupportFragmentManager());
+        refreshUserData = new RefreshUserData(userData.getCookie(), userData.getUserId(), userData, getSupportFragmentManager(), getApplicationContext());
         refreshUserData.execute();
     }
 

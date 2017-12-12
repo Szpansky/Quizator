@@ -1,8 +1,10 @@
 package com.apps.szpansky.quizator.Tasks;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.R;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -16,10 +18,8 @@ import java.util.ArrayList;
 
 public class GetTopUsers extends BasicTask {
 
-    String getTopTenURL;
-    ArrayList<UserRank> topTen = new ArrayList<>();
-
-
+    private String getTopTenURL;
+    private ArrayList<UserRank> topTen = new ArrayList<>();
 
     class UserRank {
         String userName;
@@ -33,9 +33,9 @@ public class GetTopUsers extends BasicTask {
     }
 
 
-    public GetTopUsers(String siteAddress, FragmentManager fragmentManager) {
-        super(fragmentManager);
-        getTopTenURL = siteAddress + "JSON/user/get_top_ten/?insecure=cool";
+    public GetTopUsers(FragmentManager fragmentManager, Context context) {
+        super(fragmentManager, context);
+        getTopTenURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/get_top_ten/?insecure=cool";
     }
 
 
@@ -79,16 +79,16 @@ public class GetTopUsers extends BasicTask {
 
                     return true;
                 } else {
-                    setError("Błędne konto");
+                    setError(getContext().getString(R.string.info_incorrect_account));
                     return false;
                 }
             } catch (JSONException e) {
-                setError("Błąd pobierania danych");
+                setError(getContext().getString(R.string.error_when_downloading));
                 e.printStackTrace();
                 return false;
             }
         } catch (IOException e) {
-            setError("Brak połączenia");
+            setError(getContext().getString(R.string.connection_error));
             e.printStackTrace();
             return false;
         }

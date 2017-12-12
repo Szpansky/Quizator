@@ -42,15 +42,13 @@ public class AppBarFragment extends Fragment {
     }
 
 
-private void onButtonClick(){
+    private void onButtonClick() {
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getActivity(),"Dostępne w krótce",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), getString(R.string.coming_soon), Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
-}
-
-
+    }
 }

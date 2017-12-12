@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.apps.szpansky.quizator.R;
 import com.google.android.gms.ads.AdRequest;
@@ -18,9 +20,7 @@ public class LoadAdFragment extends Fragment {
 
     public static LoadAdFragment newInstance() {
 
-        LoadAdFragment loadAdFragment = new LoadAdFragment();
-
-        return loadAdFragment;
+        return new LoadAdFragment();
     }
 
     @Override
@@ -32,7 +32,6 @@ public class LoadAdFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_ad, container, false);
 
         adView = view.findViewById(R.id.adView);

@@ -2,6 +2,7 @@ package com.apps.szpansky.quizator;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import android.widget.EditText;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
+import com.apps.szpansky.quizator.Tasks.CreateNewAccount;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -28,41 +30,53 @@ import java.net.URL;
 
 public class NewAccountActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
 
-    private static boolean FINISH = false;
-    private UserCreateAccountTask mAuthTask = null;
+    private CreateNewAccount mAuthTask = null;
+
+    EditText mEmailView,
+            mPasswordView,
+            mRePasswordView,
+            mUserNameView;
+
+    Button mEmailSignInButton;
 
 
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private EditText mRePasswordView;
-    private EditText mUserNameView;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthTask != null) mAuthTask.cancel(true);
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_account);
-        mEmailView = findViewById(R.id.emailRegister);
-        mUserNameView = findViewById(R.id.userNameRegister);
-        mPasswordView = findViewById(R.id.passwordRegister);
-        mRePasswordView = findViewById(R.id.repasswordRegister);
 
-        Button mEmailSignInButton = findViewById(R.id.create_account_button_registe);
+        setViews();
+        setListeners();
+    }
+
+
+    private void setListeners() {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
+    }
 
+
+    private void setViews() {
+        mEmailView = findViewById(R.id.emailRegister);
+        mUserNameView = findViewById(R.id.userNameRegister);
+        mPasswordView = findViewById(R.id.passwordRegister);
+        mRePasswordView = findViewById(R.id.repasswordRegister);
+        mEmailSignInButton = findViewById(R.id.create_account_button_registe);
     }
 
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         mEmailView.setError(null);
         mUserNameView.setError(null);
         mPasswordView.setError(null);
@@ -122,15 +136,8 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mAuthTask = new UserCreateAccountTask(email, password, username);
-                    mAuthTask.execute((Void) null);
-                }
-            }, 300);
+            mAuthTask = new CreateNewAccount(email, password, username, getSupportFragmentManager(), getApplicationContext());
+            mAuthTask.execute((Void) null);
         }
     }
 
@@ -147,116 +154,12 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
     }
 
 
-    private void showProgress(final boolean show) {
-        if (show) {
-            Loading loading = Loading.newInstance();
-            if (getSupportFragmentManager().findFragmentByTag("Loading") == null)
-                getSupportFragmentManager().beginTransaction().add(loading, "Loading").commit();
-        } else {
-            Loading loading = (Loading) getSupportFragmentManager().findFragmentByTag("Loading");
-            if (loading != null && loading.isVisible()) loading.dismiss();
-        }
-    }
-
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (FINISH) {
+        if (mAuthTask.WAS_CREATED) {
+            this.setResult(RESULT_OK);
             finish();
         }
     }
-
-
-    public class UserCreateAccountTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-        private final String mUsername;
-        private String nonceValue;
-        private String error;
-
-
-        private final String nonceURL = getString(R.string.site_address) + "cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
-        String registerURL;
-
-        UserCreateAccountTask(String email, String password, String username) {
-            mEmail = email;
-            mPassword = password;
-            mUsername = username;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                URL url = new URL(nonceURL);
-                OkHttpClient client = new OkHttpClient();
-                Request.Builder builder = new Request.Builder();
-                Request request = builder.url(url).build();
-                Response respond = client.newCall(request).execute();
-                String json = respond.body().string();
-                try {
-                    JSONObject object = new JSONObject(json);
-                    if (object.getString("status").equals("ok")) {
-                        nonceValue = object.getString("nonce");
-                        registerURL = getString(R.string.site_address) + "cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
-
-                        url = new URL(registerURL);
-                        client = new OkHttpClient();
-                        builder = new Request.Builder();
-                        request = builder.url(url).build();
-                        respond = client.newCall(request).execute();
-                        String json2 = respond.body().string();
-
-                        try {
-                            JSONObject object2 = new JSONObject(json2);
-                            if (object2.getString("status").equals("error")) {
-                                error = object2.getString("error");
-                                return false;
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-
-                        return true;
-                    } else {
-                        error = object.getString("error");
-                        return false;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Information information = Information.newInstance("Konto zostało utworzone, teraz możesz się logować");
-                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
-                FINISH = true;
-            } else {
-                Information information = Information.newInstance(getString(R.string.error) + "\n" + error);
-                getSupportFragmentManager().beginTransaction().add(information, "Information").commit();
-                FINISH = false;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
-
-
 }
 

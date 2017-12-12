@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.ShowQuestionActivity;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
@@ -25,19 +26,16 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class GetQuestion extends BasicTask {
 
-    QuestionData questionData;
-    UserData userData;
-
-    private final WeakReference<Context> context;
+    private QuestionData questionData;
+    private UserData userData;
 
     private String questionURL;
 
-    public GetQuestion(String siteAddress, UserData userData, QuestionData questionData, FragmentManager fragmentManager, Context context) {
-        super(fragmentManager);
-        questionURL = siteAddress + "cyj@n3k/user/get_question/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
+    public GetQuestion(UserData userData, QuestionData questionData, FragmentManager fragmentManager, Context context) {
+        super(fragmentManager, context);
+        questionURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/get_question/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
         this.questionData = questionData;
         this.userData = userData;
-        this.context = new WeakReference<>(context);
     }
 
 
@@ -60,26 +58,26 @@ public class GetQuestion extends BasicTask {
                     questionData.setPoints(object.getJSONObject("pytanie").getString("punkty"));
 
                 } else {
-                    setError("Problem podczas pobierania danych");
+                    setError(getContext().getString(R.string.error_when_downloading));
                     return false;
                 }
                 if (questionData.getId().equals("-1")) {
-                    setError("Dziś już odpowiadałeś, wróć jutro lub kliknij przycisk \"Omiń blokadę\"");
+                    setError(getContext().getString(R.string.question_error_daily_lock));
                     return false;
                 }
                 if (questionData.getId().equals("-2")) {
-                    setError("Brak pytań");
+                    setError(getContext().getString(R.string.question_error_no_more_questions));
                     return false;
                 }
                 return true;
             } catch (JSONException e) {
                 e.printStackTrace();
-                setError("Problem podczas pobierania danych");
+                setError(getContext().getString(R.string.error_when_downloading));
                 return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            setError("Brak połączenia");
+            setError(getContext().getString(R.string.connection_error));
             return false;
         }
 
@@ -87,12 +85,12 @@ public class GetQuestion extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        if(context.get()!=null){
-            Intent startQuestion = new Intent(context.get(), ShowQuestionActivity.class);
+        if (getContext() != null) {
+            Intent startQuestion = new Intent(getContext(), ShowQuestionActivity.class);
             startQuestion.putExtra("questionData", questionData);
             startQuestion.putExtra("userData", userData);
             startQuestion.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            context.get().startActivity(startQuestion);
+            getContext().startActivity(startQuestion);
         }
     }
 }

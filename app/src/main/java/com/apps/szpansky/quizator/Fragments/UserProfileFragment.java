@@ -90,7 +90,7 @@ public class UserProfileFragment extends Fragment {
 
     private void startQuestion() {
         questionData = new QuestionData();
-        getQuestion = new GetQuestion(getString(R.string.site_address), userData, questionData, getActivity().getSupportFragmentManager(), getActivity().getBaseContext());
+        getQuestion = new GetQuestion(userData, questionData, getActivity().getSupportFragmentManager(), getActivity().getApplicationContext());
         getQuestion.execute((Void) null);
     }
 
@@ -106,7 +106,7 @@ public class UserProfileFragment extends Fragment {
         skipLockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                renewUserAnswer = new RenewUserAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getFragmentManager());
+                renewUserAnswer = new RenewUserAnswer(userData.getCookie(), userData.getUserId(), getFragmentManager(), getActivity().getApplicationContext());
                 renewUserAnswer.execute();
             }
         });
@@ -160,7 +160,7 @@ public class UserProfileFragment extends Fragment {
 
         String progress = userRating.toString() + "%";
         progressLvlText.setText(progress);
-        getActivity().setTitle("Masz: " + userData.getUserPoints() + " pkt");
+        getActivity().setTitle(getString(R.string.you_got) + ": " + userData.getUserPoints() + " " + getString(R.string.points_shortcut));
     }
 
 }

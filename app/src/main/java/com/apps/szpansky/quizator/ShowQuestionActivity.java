@@ -12,7 +12,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -26,13 +25,12 @@ import com.google.android.gms.ads.InterstitialAd;
 
 public class ShowQuestionActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
 
-    SendAnswer sendAnswer;
-
-    private static boolean FINISH = false;
+    SendAnswer sendAnswer = null;
 
     boolean flag = false;
 
-    FloatingActionButton sendAnswerButton;
+    FloatingActionButton sendAnswerButton,
+            startVideo;
 
     private RadioGroup radioGroup;
     private RadioButton answerA, answerB, answerC, answerD;
@@ -41,9 +39,14 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
     private UserData userData;
     private QuestionData questionData;
 
-    FloatingActionButton startVideo;
-
     private InterstitialAd interstitialAd;
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (sendAnswer != null) sendAnswer.cancel(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         getBundle();
         setViews();
         setContent();
-        onButtonClick();
+        setListeners();
         setAd();
     }
 
@@ -75,7 +78,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
             public void run() {
                 interstitialAd.show();
             }
-        },3000);
+        }, 3000);
     }
 
 
@@ -98,7 +101,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         answerD = findViewById(R.id.d);
     }
 
-    private void onButtonClick() {
+    private void setListeners() {
         startVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +113,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
             @SuppressLint("StaticFieldLeak")
             @Override
             public boolean onLongClick(View v) {
-                sendAnswer = new SendAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getUserAnswer(), getSupportFragmentManager());
+                sendAnswer = new SendAnswer(userData.getCookie(), userData.getUserId(), getUserAnswer(), getSupportFragmentManager(), getApplicationContext());
                 sendAnswer.execute((Void) null);
                 return false;
             }
@@ -131,7 +134,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
 
     private void setContent() {
         String[] mQuestion = questionData.getText().split("\n");
-        ShowQuestionActivity.super.setTitle("Do wygrania: " + questionData.getPoints() + " punktów");
+        ShowQuestionActivity.super.setTitle(getString(R.string.to_win) + ": " + questionData.getPoints() + " " + getString(R.string.points_shortcut));
 
         if (!questionData.getLink().equals("-1")) {
             startVideo.setVisibility(View.VISIBLE);
@@ -151,8 +154,6 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
         answerB.setText(mQuestion[2]);
         answerC.setText(mQuestion[3]);
         answerD.setText(mQuestion[4]);
-
-        FINISH = false;
     }
 
 
@@ -186,7 +187,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-            finish();
+        finish();
     }
 
 }

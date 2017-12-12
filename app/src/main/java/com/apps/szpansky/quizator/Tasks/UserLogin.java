@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.MainActivity;
+import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -26,13 +27,11 @@ public class UserLogin extends BasicTask {
 
     private final String sendLoginURL;
     private UserData userData;
-    private final WeakReference<Context> context;
 
-    public UserLogin(String siteAddress, String email, String password, UserData userData, FragmentManager fragmentManager, Context context) {
-        super(fragmentManager);
-        sendLoginURL = siteAddress + "cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
+    public UserLogin(String email, String password, UserData userData, FragmentManager fragmentManager, Context context) {
+        super(fragmentManager, context);
+        sendLoginURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
         this.userData = userData;
-        this.context= new WeakReference<> (context);
     }
 
     @Override
@@ -70,12 +69,12 @@ public class UserLogin extends BasicTask {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                setError("Problem podczas pobierania danych");
+                setError(getContext().getString(R.string.error_when_downloading));
                 return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            setError("Brak połączenia");
+            setError(getContext().getString(R.string.connection_error));
             return false;
         }
 
@@ -83,11 +82,11 @@ public class UserLogin extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        if (context.get()!= null) {
-            Intent startMain = new Intent(context.get(), MainActivity.class);
+        if (getContext() != null) {
+            Intent startMain = new Intent(getContext(), MainActivity.class);
             startMain.putExtra("userData", userData);
             startMain.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            context.get().startActivity(startMain);
+            getContext().startActivity(startMain);
         }
     }
 }

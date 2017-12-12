@@ -1,13 +1,13 @@
 package com.apps.szpansky.quizator;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -21,16 +21,21 @@ import com.apps.szpansky.quizator.Tools.MySharedPreferences;
 
 public class LoginActivity extends AppCompatActivity {
 
+    final int RESULT_FROM_NEW_ACCOUNT_ACTIVITY = 1;
+
     RetrievePassword mPasswordTask = null;
     UserLogin userLogin = null;
 
     UserData userData;
 
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    public final int RESULT_FROM_MAIN = 50;
-    private CheckBox saveLoginData;
+    EditText mEmailView,
+            mPasswordView;
 
+    CheckBox saveLoginData;
+
+    Button mEmailSignInButton,
+            retrievePassword,
+            createAccountButton;
 
     @Override
     protected void onPause() {
@@ -44,16 +49,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mEmailView = findViewById(R.id.email);
-        mPasswordView = findViewById(R.id.password);
 
-        //mEmailView.setText(MySharedPreferences.getLogin(this));
-        //mPasswordView.setText(MySharedPreferences.getPassword(this));
-
-        saveLoginData = findViewById(R.id.save_login_data);
-        saveLoginData.setChecked(MySharedPreferences.getSaveLoginDataIsSet(this));
+        setViews();
+        onButtonClick();
+        getUserLoginData();
+        setUserLoginData();
+    }
 
 
+    private void setUserLoginData() {
         saveLoginData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -67,21 +71,24 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        saveLoginData.setChecked(MySharedPreferences.getSaveLoginDataIsSet(this));
+    }
 
 
+    private void getUserLoginData() {
         if (MySharedPreferences.getSaveLoginDataIsSet(this)) {
             mEmailView.setText(MySharedPreferences.getLogin(this));
             mPasswordView.setText(MySharedPreferences.getPassword(this));
         }
+    }
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        Button retrievePassword = findViewById(R.id.retrieve_password_button);
-        Button createAccountButton = findViewById(R.id.create_account_button);
+
+    private void onButtonClick() {
         createAccountButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createAccount = new Intent(getBaseContext(), NewAccountActivity.class);
-                startActivity(createAccount);
+                Intent createAccount = new Intent(getApplicationContext(), NewAccountActivity.class);
+                startActivityForResult(createAccount, RESULT_FROM_NEW_ACCOUNT_ACTIVITY);
             }
         });
         retrievePassword.setOnClickListener(new OnClickListener() {
@@ -96,6 +103,16 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+    }
+
+
+    private void setViews() {
+        mEmailView = findViewById(R.id.email);
+        mPasswordView = findViewById(R.id.password);
+        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        retrievePassword = findViewById(R.id.retrieve_password_button);
+        createAccountButton = findViewById(R.id.create_account_button);
+        saveLoginData = findViewById(R.id.save_login_data);
     }
 
 
@@ -115,14 +132,14 @@ public class LoginActivity extends AppCompatActivity {
             focusView = mEmailView;
             cancel = true;
         }
-
         if (cancel) {
             focusView.requestFocus();
         } else {
-            mPasswordTask = new RetrievePassword(getString(R.string.site_address), email, getSupportFragmentManager());
+            mPasswordTask = new RetrievePassword(email, getSupportFragmentManager(), getApplicationContext());
             mPasswordTask.execute();
         }
     }
+
 
     private void attemptLogin() {
         mEmailView.setError(null);
@@ -162,25 +179,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     private boolean isEmailValid(String email) {
         return !(email.contains("\"") || email.contains(" ") || email.contains("?") || email.contains("&"));
     }
 
+
     private boolean isPasswordValid(String password) {
         return !(password.contains("\"") || password.contains(" ") || password.contains("?") || password.contains("&"));
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case RESULT_FROM_MAIN:
-                if (resultCode == RESULT_OK) {
-                    newLoginTask();
-                }
-                break;
-        }
     }
 
 
@@ -189,8 +195,21 @@ public class LoginActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
 
         userData = new UserData();
-        userLogin = new UserLogin(getString(R.string.site_address), email, password, userData, getSupportFragmentManager(), getBaseContext());
+        userLogin = new UserLogin(email, password, userData, getSupportFragmentManager(), getApplicationContext());
         userLogin.execute((Void) null);
     }
-}
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == RESULT_FROM_NEW_ACCOUNT_ACTIVITY) {
+
+            if (resultCode == RESULT_OK) {
+                mEmailView.setText(MySharedPreferences.getLogin(getApplicationContext()));
+                mPasswordView.setText(MySharedPreferences.getPassword(getApplicationContext()));
+            }
+
+        }
+    }
+}

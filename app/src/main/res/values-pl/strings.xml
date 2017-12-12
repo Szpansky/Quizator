@@ -33,10 +33,10 @@
     <string name="need_points">Wymaga punktów:</string>
     <string name="log_out">Wyloguj</string>
     <string name="close">Zamknij</string>
-    <string name="about_app">W aplikacji możesz zdobywać punkty, poprzez odpowiadanie na dzienne pytania. Dzięki możliwości przycisku \"omiń blokadę\" możesz odpowiadać maksymalnie na 10 pytań jednego dnia. Pamiętaj, błędna odpowiedź to ujemne punkty\n Powodzenia :)</string>
+    <string name="about_app">W aplikacji możesz zdobywać punkty, poprzez odpowiadanie na pytania.\nMiej nauwadze, że błędna odpowiedź to ujemne punkty.\nPowodzenia :)</string>
     <string name="skip_lock">Omiń blokadę</string>
     <string name="ad_failed_to_load">Błąd połaczenia lub wykorzystałeś dzienny limit</string>
-    <string name="question_error_daily_lock">Wróc jutro by odpowiedzieć, lub kliknij w przycisk "omiń blokadę" i obejrzyj krótki filmik</string>
+    <string name="question_error_daily_lock">Wróc jutro by odpowiedzieć</string>
     <string name="question_error_no_more_questions">Niestety pula pytań się skończyła</string>
     <string name="question_error">Błąd podczas pobierania pytania</string>
     <string name="connection_error">Błąd połączenia</string>
@@ -50,5 +50,14 @@
     <string name="add_new_question">Dodaj nowe pytanie</string>
     <string name="remember_me">Zapamiętaj mnie</string>
     <string name="need">Potrzeba</string>
+    <string name="error_when_downloading">Problem podczas pobierania danych</string>
+    <string name="info_password_was_send">asło zostało wysłane na podany adres</string>
+    <string name="info_account_doesnt_exist">Konto nie istnieje</string>
+    <string name="info_incorrect_account">Błędne konto</string>
+    <string name="info_now_you_can_answer">Teraz znów możesz odpowiadać</string>
+    <string name="you_got">Masz</string>
+    <string name="coming_soon">Dostępne wkrótce</string>
+    <string name="to_win">Do wygrania</string>
+    <string name="x">X</string>
 
 </resources>

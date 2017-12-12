@@ -1,5 +1,6 @@
 package com.apps.szpansky.quizator.Tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 
 
@@ -30,11 +32,13 @@ public class RefreshUserData extends AsyncTask<Void, Void, Boolean> {
     private UserProfileFragment userProfileFragment;
     private FragmentManager fragmentManager;
     private String error = "";
+    private final WeakReference<Context> context;
 
-    public RefreshUserData(String siteAddress, String cookie, String userID, UserData userData, FragmentManager fragmentManager) {
-        sendLoginURL = siteAddress + "cyj@n3k/user/validate_auth_cookie/?insecure=cool&cookie=" + cookie + "&user_id=" + userID;
+    public RefreshUserData(String cookie, String userID, UserData userData, FragmentManager fragmentManager, Context context) {
+        sendLoginURL = context.getString(R.string.site_address) + "cyj@n3k/user/validate_auth_cookie/?insecure=cool&cookie=" + cookie + "&user_id=" + userID;
         this.userData = userData;
         this.fragmentManager = fragmentManager;
+        this.context = new WeakReference<>(context);
     }
 
     @Override
@@ -65,12 +69,12 @@ public class RefreshUserData extends AsyncTask<Void, Void, Boolean> {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                setError("Problem podczas odświerzania danych");
+                setError(context.get().getString(R.string.error_when_downloading));
                 return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            setError("Brak połączenia");
+            setError(context.get().getString(R.string.connection_error));
             return false;
         }
 
@@ -99,7 +103,7 @@ public class RefreshUserData extends AsyncTask<Void, Void, Boolean> {
                     getFragmentManager().beginTransaction().replace(R.id.content_main, userProfileFragment).commit();
                 }
             } else {
-                Information information = Information.newInstance("Błąd:\n" + getError());
+                Information information = Information.newInstance(context.get().getString(R.string.error) + "\n" + getError());
                 getFragmentManager().beginTransaction().add(information, "Information").commit();
             }
         }

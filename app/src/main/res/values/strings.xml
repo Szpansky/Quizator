@@ -46,7 +46,7 @@
     <string name="skip_lock">Skip lock</string>
     <string name="connection_error">Connection error</string>
     <string name="hold_for_answer">Hold for send answer</string>
-    <string name="question_error_daily_lock">Come back tomorrow or click "skip lock" button and watch video</string>
+    <string name="question_error_daily_lock">Come back tomorrow</string>
     <string name="question_error_no_more_questions">There is no more questions</string>
     <string name="question_error">Error when trying to download question</string>
     <string name="error">Error</string>
@@ -57,5 +57,14 @@
     <string name="previous_lvl">Previous\nlvl</string>
     <string name="add_new_question">Add new question</string>
     <string name="remember_me">Remember me</string>
+    <string name="error_when_downloading">Error when downloading data</string>
+    <string name="info_password_was_send">Password was sent to you E-mail address</string>
+    <string name="info_account_doesnt_exist">Account doesn\'t exist</string>
+    <string name="info_incorrect_account">Incorrect account</string>
+    <string name="info_now_you_can_answer">Now you can answer again</string>
+    <string name="you_got">You got</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="to_win">To win</string>
+    <string name="x">X</string>
 
 </resources>
