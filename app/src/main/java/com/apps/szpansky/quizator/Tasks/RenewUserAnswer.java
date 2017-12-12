@@ -20,7 +20,7 @@ public class RenewUserAnswer extends BasicTask {
 
 
     public RenewUserAnswer(String siteAddress, String cookie, String userId, FragmentManager fragmentManager) {
-        setFragmentManager(fragmentManager);
+        super(fragmentManager);
         renewUserAnswerURL = siteAddress + "cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
     }
 

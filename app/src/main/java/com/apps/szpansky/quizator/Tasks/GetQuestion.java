@@ -1,8 +1,11 @@
 package com.apps.szpansky.quizator.Tasks;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.ShowQuestionActivity;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.squareup.okhttp.OkHttpClient;
@@ -13,19 +16,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public abstract class GetQuestion extends BasicTask {
+
+public class GetQuestion extends BasicTask {
 
     QuestionData questionData;
+    UserData userData;
+
+    private final WeakReference<Context> context;
 
     private String questionURL;
 
-    protected GetQuestion(String siteAddress, UserData userData, QuestionData questionData, FragmentManager fragmentManager) {
+    public GetQuestion(String siteAddress, UserData userData, QuestionData questionData, FragmentManager fragmentManager, Context context) {
+        super(fragmentManager);
         questionURL = siteAddress + "cyj@n3k/user/get_question/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
         this.questionData = questionData;
-        setFragmentManager(fragmentManager);
+        this.userData = userData;
+        this.context = new WeakReference<>(context);
     }
 
 
@@ -75,9 +87,13 @@ public abstract class GetQuestion extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        Information information = Information.newInstance("Pobrano pytanie:\n" + questionData.getText());
-        getFragmentManager().beginTransaction().add(information, "Information").commit();
-
+        if(context.get()!=null){
+            Intent startQuestion = new Intent(context.get(), ShowQuestionActivity.class);
+            startQuestion.putExtra("questionData", questionData);
+            startQuestion.putExtra("userData", userData);
+            startQuestion.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            context.get().startActivity(startQuestion);
+        }
     }
 }
 

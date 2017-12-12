@@ -1,6 +1,5 @@
 package com.apps.szpansky.quizator;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
@@ -34,14 +33,22 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (userLogin != null) userLogin.cancel(true);
+        if (mPasswordTask != null) mPasswordTask.cancel(true);
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mEmailView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
 
-        mEmailView.setText(MySharedPreferences.getLogin(this));
-        mPasswordView.setText(MySharedPreferences.getPassword(this));
+        //mEmailView.setText(MySharedPreferences.getLogin(this));
+        //mPasswordView.setText(MySharedPreferences.getPassword(this));
 
         saveLoginData = findViewById(R.id.save_login_data);
         saveLoginData.setChecked(MySharedPreferences.getSaveLoginDataIsSet(this));
@@ -51,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MySharedPreferences.setSaveLoginData(getBaseContext(), isChecked);
-                if (isChecked) {
+                if (!isChecked) {
                     MySharedPreferences.setLogin(getBaseContext(), "");
                     MySharedPreferences.setPassword(getBaseContext(), "");
                 } else {
@@ -176,20 +183,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
+
     private void newLoginTask() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         userData = new UserData();
-        userLogin = new UserLogin(getString(R.string.site_address), email, password, userData, getSupportFragmentManager()) {
-            @Override
-            protected void onSuccessExecute() {
-                Intent startMain = new Intent(getBaseContext(), MainActivity.class);
-                startMain.putExtra("userData", userData);
-                startActivityForResult(startMain, RESULT_FROM_MAIN);
-            }
-        };
+        userLogin = new UserLogin(getString(R.string.site_address), email, password, userData, getSupportFragmentManager(), getBaseContext());
         userLogin.execute((Void) null);
     }
 }

@@ -20,9 +20,9 @@ public class SendAnswer extends BasicTask {
     private final String update_game_url;
     String questionResult;
 
-    protected SendAnswer(String siteAddress, String cookie, String userId, String userAnswer, FragmentManager fragmentManager) {
+    public SendAnswer(String siteAddress, String cookie, String userId, String userAnswer, FragmentManager fragmentManager) {
+        super(fragmentManager);
         update_game_url = siteAddress + "cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
-        setFragmentManager(fragmentManager);
     }
 
 

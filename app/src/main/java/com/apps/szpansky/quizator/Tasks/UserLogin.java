@@ -1,9 +1,12 @@
 package com.apps.szpansky.quizator.Tasks;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.MainActivity;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -13,18 +16,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public abstract class UserLogin extends BasicTask {
+
+public class UserLogin extends BasicTask {
 
     private final String sendLoginURL;
     private UserData userData;
+    private final WeakReference<Context> context;
 
-    protected UserLogin(String siteAddress, String email, String password, UserData userData, FragmentManager fragmentManager) {
+    public UserLogin(String siteAddress, String email, String password, UserData userData, FragmentManager fragmentManager, Context context) {
+        super(fragmentManager);
         sendLoginURL = siteAddress + "cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
         this.userData = userData;
-        setFragmentManager(fragmentManager);
+        this.context= new WeakReference<> (context);
     }
 
     @Override
@@ -55,7 +63,6 @@ public abstract class UserLogin extends BasicTask {
                     userData.setRankPrev(object.getJSONObject("user").getString("rank_prev"));
                     userData.setRankNext(object.getJSONObject("user").getString("rank_next"));
                     userData.setUserAvatar(object.getJSONObject("user").getString("avatar"));
-
                     return true;
                 } else {
                     setError(object.getString("error"));
@@ -76,7 +83,11 @@ public abstract class UserLogin extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        Information information = Information.newInstance("Zalogwoano\n" + "Witaj " + userData.getUsername());
-        getFragmentManager().beginTransaction().add(information, "Information").commit();
+        if (context.get()!= null) {
+            Intent startMain = new Intent(context.get(), MainActivity.class);
+            startMain.putExtra("userData", userData);
+            startMain.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            context.get().startActivity(startMain);
+        }
     }
 }

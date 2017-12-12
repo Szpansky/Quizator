@@ -20,7 +20,7 @@ public class RetrievePassword extends BasicTask {
     private final String sendRetrievePasswordURL;
 
     public RetrievePassword(String siteAddress, String email, FragmentManager fragmentManager) {
-        setFragmentManager(fragmentManager);
+        super(fragmentManager);
         sendRetrievePasswordURL = siteAddress + "cyj@n3k/user/retrieve_password/?insecure=cool&user_login=" + email;
     }
 

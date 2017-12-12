@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.SendAnswer;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 
 public class ShowQuestionActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
@@ -38,7 +41,9 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
     private UserData userData;
     private QuestionData questionData;
 
-    Button startVideo;
+    FloatingActionButton startVideo;
+
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +56,26 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
 
         getBundle();
         setViews();
-        onButtonClick();
         setContent();
+        onButtonClick();
+        setAd();
+    }
+
+
+    private void setAd() {
+        //ca-app-pub-3940256099942544/1033173712  getString(R.string.ads_reward_full_screen)
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.ads_reward_full_screen));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                interstitialAd.show();
+            }
+        },3000);
     }
 
 
@@ -87,13 +110,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
             @SuppressLint("StaticFieldLeak")
             @Override
             public boolean onLongClick(View v) {
-                sendAnswer = new SendAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getUserAnswer(), getSupportFragmentManager()) {
-                    @Override
-                    protected void onSuccessExecute() {
-                        super.onSuccessExecute();
-                        FINISH = true;
-                    }
-                };
+                sendAnswer = new SendAnswer(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), getUserAnswer(), getSupportFragmentManager());
                 sendAnswer.execute((Void) null);
                 return false;
             }
@@ -169,9 +186,7 @@ public class ShowQuestionActivity extends AppCompatActivity implements DialogInt
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (FINISH) {
             finish();
-        }
     }
 
 }

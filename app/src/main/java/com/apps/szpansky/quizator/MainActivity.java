@@ -1,11 +1,11 @@
 package com.apps.szpansky.quizator;
 
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,17 +16,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
-import com.apps.szpansky.quizator.Fragments.UserProfileAppBarFragment;
+import com.apps.szpansky.quizator.Fragments.LoadAdFragment;
+import com.apps.szpansky.quizator.Fragments.AppBarFragment;
 import com.apps.szpansky.quizator.Fragments.UserProfileFragment;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.GetQuestion;
+import com.apps.szpansky.quizator.Tasks.RefreshUserData;
 import com.apps.szpansky.quizator.Tools.MySharedPreferences;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    GetQuestion getQuestion;
+    GetQuestion getQuestion = null;
+    RefreshUserData refreshUserData;    //do not initialize that asynctask with null, to prevent runtime exception
 
     UserData userData;
     QuestionData questionData;
@@ -34,7 +37,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
 
     UserProfileFragment userProfileFragment;
-    UserProfileAppBarFragment userProfileAppBarFragment;
+    AppBarFragment appBarFragment;
+    LoadAdFragment loadAdFragment;
+
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (refreshUserData != null) refreshUserData.cancel(true);
+        if (getQuestion != null) getQuestion.cancel(true);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +58,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getBundle();
         setViews();
         setToolbar();
-        questionData = new QuestionData();
 
         userProfileFragment = UserProfileFragment.newInstance(userData);
-        userProfileAppBarFragment = UserProfileAppBarFragment.newInstance(userData);
+        appBarFragment = AppBarFragment.newInstance(userData);
+        loadAdFragment = LoadAdFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, userProfileFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.content_app_bar, userProfileAppBarFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_app_bar, appBarFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.ad_frame, loadAdFragment).commit();
+
 
         if (!MySharedPreferences.getMainTutorialWasShown(this)) {
             MySharedPreferences.setMainTutorialWasShown(this, true);
@@ -77,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setViews() {
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Masz: " + userData.getUserPoints() + " pkt");
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -89,24 +105,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
     }
 
 
-    @SuppressLint("StaticFieldLeak")
     private void startQuestion() {
         questionData = new QuestionData();
-        getQuestion = new GetQuestion(getString(R.string.site_address), userData, questionData, getSupportFragmentManager()) {
-            @Override
-            public void onSuccessExecute() {
-                System.out.println(questionData.getText());
-                Intent startQuestion = new Intent(getBaseContext(), ShowQuestionActivity.class);
-                startQuestion.putExtra("questionData", questionData);
-                startQuestion.putExtra("userData", userData);
-                startActivity(startQuestion);
-            }
-        };
+        getQuestion = new GetQuestion(getString(R.string.site_address), userData, questionData, getSupportFragmentManager(), getBaseContext());
         getQuestion.execute((Void) null);
-
     }
 
 
@@ -121,15 +127,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    /**
+     * Method override for simply change title of activity
+     *
+     * @param title the new title
+     */
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        setResult(RESULT_OK);
-        finish();
+    public void setTitle(CharSequence title) {
+        collapsingToolbarLayout.setTitle(title);
     }
 
 
+    /**
+     * That method is for refresh user data
+     */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        refreshUserData = new RefreshUserData(getString(R.string.site_address), userData.getCookie(), userData.getUserId(), userData, getSupportFragmentManager());
+        refreshUserData.execute();
+    }
+
+
+    /**
+     * Method first close drawer, when drawer is closed it run super method
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -164,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 

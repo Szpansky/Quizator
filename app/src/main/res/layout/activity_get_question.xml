@@ -44,4 +44,14 @@
         app:fabSize="normal"
         app:srcCompat="@mipmap/ic_done_white_24dp" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/start_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:srcCompat="@mipmap/ic_ondemand_video_white_24dp" />
+
 </android.support.design.widget.CoordinatorLayout>
