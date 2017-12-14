@@ -64,5 +64,6 @@
     <string name="profile">Profil</string>
     <string name="road_adventure">Tor przygody</string>
     <string name="rank">Ranking</string>
+    <string name="position">Pozycja</string>
 
 </resources>

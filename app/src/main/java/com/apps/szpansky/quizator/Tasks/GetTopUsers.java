@@ -3,8 +3,9 @@ package com.apps.szpansky.quizator.Tasks;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.Fragments.RanksFragment;
 import com.apps.szpansky.quizator.R;
+import com.apps.szpansky.quizator.SimpleData.UserDataInRank;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -16,21 +17,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 public class GetTopUsers extends BasicTask {
 
     private String getTopTenURL;
-    private ArrayList<UserRank> topTen = new ArrayList<>();
-
-    class UserRank {
-        String userName;
-        String userPoints;
-
-        @Override
-        public String toString() {
-            return userName +
-                    "\t Pkt= " + userPoints + "\n";
-        }
-    }
+    private ArrayList<UserDataInRank> topTen = new ArrayList<>();
 
 
     public GetTopUsers(FragmentManager fragmentManager, Context context) {
@@ -41,15 +32,9 @@ public class GetTopUsers extends BasicTask {
 
     @Override
     protected void onSuccessExecute() {
-        String ranks = "";
-        for (UserRank userRank :
-                topTen) {
-            ranks = ranks.concat(userRank.toString());
-        }
-
-        Information information = Information.newInstance(ranks);
-        getFragmentManager().beginTransaction().add(information, "Information").commit();
-
+        RanksFragment ranksFragment;
+        ranksFragment = (RanksFragment) getFragmentManager().findFragmentById(getFragmentManager().findFragmentById(R.id.content_main).getId());
+        ranksFragment.setList(topTen);
     }
 
     @Override
@@ -66,20 +51,19 @@ public class GetTopUsers extends BasicTask {
             try {
                 JSONObject object = new JSONObject(json);
 
-
                 if (object.getString("status").equals("ok")) {
 
-
                     for (int i = 0; i < object.getJSONArray("array").length(); i++) {
-                        UserRank userRank = new UserRank();
-                        userRank.userName = object.getJSONArray("array").getJSONObject(i).get("user_nicename").toString();
-                        userRank.userPoints = object.getJSONArray("array").getJSONObject(i).get("meta_value").toString();
-                        topTen.add(userRank);
+                        int userPosition = i +1;
+                        UserDataInRank userDataInRank = new UserDataInRank();
+                        userDataInRank.setUserName(object.getJSONArray("array").getJSONObject(i).get("display_name").toString());
+                        userDataInRank.setUserPoints(object.getJSONArray("array").getJSONObject(i).get("meta_value").toString());
+                        userDataInRank.setUserPosition(Integer.toString(userPosition));
+                        topTen.add(userDataInRank);
                     }
-
                     return true;
                 } else {
-                    setError(getContext().getString(R.string.info_incorrect_account));
+                    setError(getContext().getString(R.string.error_when_downloading));
                     return false;
                 }
             } catch (JSONException e) {

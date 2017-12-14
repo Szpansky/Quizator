@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.Fragments.LoadAdFragment;
 import com.apps.szpansky.quizator.Fragments.AppBarFragment;
+import com.apps.szpansky.quizator.Fragments.RanksFragment;
 import com.apps.szpansky.quizator.Fragments.RoadFragment;
 import com.apps.szpansky.quizator.Fragments.UserProfileFragment;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AppBarFragment appBarFragment;
     LoadAdFragment loadAdFragment;
     RoadFragment roadFragment;
+    RanksFragment ranksFragment;
 
 
     @Override
@@ -64,12 +66,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userProfileFragment = UserProfileFragment.newInstance(userData);
         appBarFragment = AppBarFragment.newInstance(userData);
-        roadFragment = RoadFragment.newInstance(userData);
-        loadAdFragment = LoadAdFragment.newInstance();
+        roadFragment = RoadFragment.newInstance(userData.getRankName());
+       // loadAdFragment = LoadAdFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, userProfileFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.content_app_bar, appBarFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.ad_frame, loadAdFragment).commit();
+       // getSupportFragmentManager().beginTransaction().add(R.id.ad_frame, loadAdFragment).commit();
 
 
         if (!MySharedPreferences.getMainTutorialWasShown(this)) {
@@ -207,13 +209,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_progress_road: {
-                roadFragment = RoadFragment.newInstance(userData);
+                roadFragment = RoadFragment.newInstance(userData.getRankName());
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, roadFragment).commit();
                 break;
             }
             case R.id.nav_user_rank: {
-                Toast toast = Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-                toast.show();
+                ranksFragment = RanksFragment.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,ranksFragment).commit();
                 break;
             }
             case R.id.nav_rate_app: {

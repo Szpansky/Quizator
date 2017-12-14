@@ -13,14 +13,14 @@ import com.apps.szpansky.quizator.SimpleData.UserData;
 
 public class RoadFragment extends Fragment {
 
-    UserData userData;
+    String userRank;
     ImageView loading1, loading2, loading3, loading4, loading5, loading6, loading7, loading8, loading9;
 
-    public static RoadFragment newInstance(UserData userData) {
+    public static RoadFragment newInstance(String userRank) {
         RoadFragment roadFragment = new RoadFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("userData", userData);
+        bundle.putString("userRank", userRank);
         roadFragment.setArguments(bundle);
 
         return roadFragment;
@@ -28,7 +28,7 @@ public class RoadFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        userData = (UserData) getArguments().getSerializable("userData");
+        userRank = getArguments().getString("userRank");
 
         View view = inflater.inflate(R.layout.framgent_road, container, false);
 
@@ -42,7 +42,7 @@ public class RoadFragment extends Fragment {
         loading8 = view.findViewById(R.id.loading_8);
         loading9 = view.findViewById(R.id.loading_9);
 
-        setUserProgressRoad(userData.getRankName());
+        setUserProgressRoad(userRank);
         return view;
     }
 
@@ -60,7 +60,7 @@ public class RoadFragment extends Fragment {
         loading9.setVisibility(View.INVISIBLE);
 
         switch (userRank.toLowerCase()) {
-            case "kret": {
+            case "królik": {
                 loading1.setVisibility(View.VISIBLE);
                 break;
             }

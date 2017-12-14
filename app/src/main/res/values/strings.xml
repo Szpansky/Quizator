@@ -66,5 +66,11 @@
     <string name="coming_soon">Coming soon</string>
     <string name="to_win">To win</string>
     <string name="x">X</string>
+    <string name="base">Base</string>
+    <string name="account">Account</string>
+    <string name="profile">Profile</string>
+    <string name="road_adventure">Adventure road</string>
+    <string name="rank">Ranks</string>
+    <string name="position">Position</string>
 
 </resources>

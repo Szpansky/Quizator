@@ -7,7 +7,7 @@ public class UserData implements Serializable {
     private String cookie;
     private String userId;
     private String username;
-    private String nicename;
+    private static String displayName;      //its statick to get the username in ranks
     private String email;
     private String registered;
     private String nickname;
@@ -59,12 +59,12 @@ public class UserData implements Serializable {
         this.username = username;
     }
 
-    public String getNicename() {
-        return nicename;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setNicename(String nicename) {
-        this.nicename = nicename;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmail() {

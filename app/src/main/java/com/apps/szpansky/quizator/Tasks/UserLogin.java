@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
-import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.MainActivity;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
@@ -17,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -51,7 +49,7 @@ public class UserLogin extends BasicTask {
                     userData.setCookie(object.getString("cookie"));
                     userData.setUserId(object.getJSONObject("user").getString("id"));
                     userData.setUsername(object.getJSONObject("user").getString("username"));
-                    userData.setNicename(object.getJSONObject("user").getString("nicename"));
+                    userData.setDisplayName(object.getJSONObject("user").getString("displayname"));
                     userData.setEmail(object.getJSONObject("user").getString("email"));
                     userData.setRegistered(object.getJSONObject("user").getString("registered"));
                     userData.setNickname(object.getJSONObject("user").getString("nickname"));
