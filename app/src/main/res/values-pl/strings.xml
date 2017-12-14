@@ -65,5 +65,6 @@
     <string name="road_adventure">Tor przygody</string>
     <string name="rank">Ranking</string>
     <string name="position">Pozycja</string>
+    <string name="display_name">Nazwa wyświetlana</string>
 
 </resources>

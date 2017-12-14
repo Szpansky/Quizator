@@ -72,5 +72,6 @@
     <string name="road_adventure">Adventure road</string>
     <string name="rank">Ranks</string>
     <string name="position">Position</string>
+    <string name="display_name">Display name</string>
 
 </resources>

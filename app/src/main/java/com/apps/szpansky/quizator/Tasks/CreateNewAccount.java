@@ -24,14 +24,20 @@ public class CreateNewAccount extends BasicTask {
     private String mEmail,
             mPassword,
             mUsername,
+            mDisplayName,
             siteAddress,
             nonceURL;
 
-    public CreateNewAccount(String email, String password, String username, FragmentManager fragmentManager, Context context) {
+    public CreateNewAccount(String email, String password, String username, String displayName, FragmentManager fragmentManager, Context context) {
         super(fragmentManager, context);
         mEmail = email;
         mPassword = password;
         mUsername = username;
+
+        if (displayName.isEmpty())
+            mDisplayName = username;
+        else mDisplayName = displayName;
+
         this.siteAddress = getContext().getString(R.string.site_address);
         this.nonceURL = siteAddress + "cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
     }
@@ -51,7 +57,7 @@ public class CreateNewAccount extends BasicTask {
 
                 if (object.getString("status").equals("ok")) {
                     String nonceValue = object.getString("nonce");
-                    String registerURL = siteAddress + "cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mUsername + "&user_pass=" + mPassword;
+                    String registerURL = siteAddress + "cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mDisplayName + "&user_pass=" + mPassword;
 
                     url = new URL(registerURL);
                     client = new OkHttpClient();

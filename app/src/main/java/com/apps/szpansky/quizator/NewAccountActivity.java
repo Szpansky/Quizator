@@ -33,6 +33,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
     private CreateNewAccount mAuthTask = null;
 
     EditText mEmailView,
+            mDisplayNameView,
             mPasswordView,
             mRePasswordView,
             mUserNameView;
@@ -69,6 +70,7 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
 
     private void setViews() {
         mEmailView = findViewById(R.id.emailRegister);
+        mDisplayNameView = findViewById(R.id.userDisplayName);
         mUserNameView = findViewById(R.id.userNameRegister);
         mPasswordView = findViewById(R.id.passwordRegister);
         mRePasswordView = findViewById(R.id.repasswordRegister);
@@ -81,9 +83,11 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
         mUserNameView.setError(null);
         mPasswordView.setError(null);
         mRePasswordView.setError(null);
+        mDisplayNameView.setError(null);
 
 
         final String username = mUserNameView.getText().toString();
+        final String displayName = mDisplayNameView.getText().toString();
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
         String rePassword = mRePasswordView.getText().toString();
@@ -132,11 +136,16 @@ public class NewAccountActivity extends AppCompatActivity implements DialogInter
             focusView = mUserNameView;
             cancel = true;
         }
+        if (!isUsernameValid(displayName)) {
+            mDisplayNameView.setError(getString(R.string.error_invalid_username));
+            focusView = mDisplayNameView;
+            cancel = true;
+        }
 
         if (cancel) {
             focusView.requestFocus();
         } else {
-            mAuthTask = new CreateNewAccount(email, password, username, getSupportFragmentManager(), getApplicationContext());
+            mAuthTask = new CreateNewAccount(email, password, username,displayName, getSupportFragmentManager(), getApplicationContext());
             mAuthTask.execute((Void) null);
         }
     }
