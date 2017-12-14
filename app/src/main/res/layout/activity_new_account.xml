@@ -32,13 +32,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="1dp"
-            android:background="@android:drawable/editbox_background"
             android:gravity="center"
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/cell_padding"
+                android:background="@android:drawable/editbox_background">
 
                 <EditText
                     android:id="@+id/userNameRegister"
@@ -52,7 +53,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/cell_padding"
+                android:background="@android:drawable/editbox_background">
 
                 <EditText
                     android:id="@+id/emailRegister"
@@ -66,7 +69,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/cell_padding"
+                android:background="@android:drawable/editbox_background">
 
                 <EditText
                     android:id="@+id/passwordRegister"
@@ -83,7 +88,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/cell_padding"
+                android:background="@android:drawable/editbox_background">
 
                 <EditText
                     android:id="@+id/repasswordRegister"
@@ -99,10 +106,12 @@
 
             <Button
                 android:id="@+id/create_account_button_registe"
-                style="?android:textAppearanceSmall"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="@dimen/cell_padding"
+                android:layout_marginRight="@dimen/cell_padding"
+                android:layout_marginTop="@dimen/button_login_margin"
                 android:text="@string/create_new_account"
                 android:textStyle="bold" />
 
