@@ -18,6 +18,7 @@ public class AppBarFragment extends Fragment {
 
     Button addQuestionButton;
 
+
     public static AppBarFragment newInstance(UserData userData) {
         AppBarFragment appBarFragment = new AppBarFragment();
 
@@ -32,7 +33,7 @@ public class AppBarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         userData = (UserData) getArguments().getSerializable("userData");
 
-        View view = inflater.inflate(R.layout.fragment_user_info_app_bar, container, false);
+        View view = inflater.inflate(R.layout.fragment_app_bar, container, false);
 
         addQuestionButton = view.findViewById(R.id.add_question_button);
 

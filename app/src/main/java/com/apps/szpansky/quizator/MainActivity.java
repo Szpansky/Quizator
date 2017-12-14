@@ -14,10 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.Fragments.LoadAdFragment;
 import com.apps.szpansky.quizator.Fragments.AppBarFragment;
+import com.apps.szpansky.quizator.Fragments.RoadFragment;
 import com.apps.szpansky.quizator.Fragments.UserProfileFragment;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     UserProfileFragment userProfileFragment;
     AppBarFragment appBarFragment;
     LoadAdFragment loadAdFragment;
+    RoadFragment roadFragment;
 
 
     @Override
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userProfileFragment = UserProfileFragment.newInstance(userData);
         appBarFragment = AppBarFragment.newInstance(userData);
+        roadFragment = RoadFragment.newInstance(userData);
         loadAdFragment = LoadAdFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, userProfileFragment).commit();
@@ -192,18 +196,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
         switch (id) {
-            case R.id.nav_logout: {
-                finish();
-            }
-            break;
+
             case R.id.nav_quest: {
                 startQuestion();
+                break;
             }
-            break;
+            case R.id.nav_profile: {
+                userProfileFragment = UserProfileFragment.newInstance(userData);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, userProfileFragment).commit();
+                break;
+            }
+            case R.id.nav_progress_road: {
+                roadFragment = RoadFragment.newInstance(userData);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, roadFragment).commit();
+                break;
+            }
+            case R.id.nav_user_rank: {
+                Toast toast = Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
+                toast.show();
+                break;
+            }
             case R.id.nav_rate_app: {
                 rateApp();
+                break;
             }
-            break;
+            case R.id.nav_logout: {
+                finish();
+                break;
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

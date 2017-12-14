@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
 
+    <item android:title="@string/base">
+    <menu android:checkableBehavior="single">
         <item
             android:id="@+id/nav_quest"
-            android:icon="@android:drawable/ic_dialog_email"
+            android:icon="@mipmap/ic_question_answer_black_24dp"
             android:title="@string/get_question" />
-    </group>
+    </menu>
+    </item>
+
+    <item android:title="@string/account">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@mipmap/ic_person_black_24dp"
+                android:title="@string/profile" />
+            <item
+                android:id="@+id/nav_progress_road"
+                android:icon="@mipmap/ic_gesture_black_24dp"
+                android:title="@string/road_adventure" />
+            <item
+                android:id="@+id/nav_user_rank"
+                android:icon="@mipmap/ic_format_list_numbered_black_24dp"
+                android:title="@string/rank" />
+        </menu>
+    </item>
 
     <item android:title="@string/utilities">
         <menu>

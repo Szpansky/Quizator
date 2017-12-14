@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/road_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="@android:drawable/alert_light_frame"
+        android:foregroundGravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/map_with_road"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            app:srcCompat="@drawable/map" />
+
+        <ImageView
+            android:id="@+id/loading_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_9" />
+
+        <ImageView
+            android:id="@+id/loading_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_8" />
+
+        <ImageView
+            android:id="@+id/loading_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_7" />
+
+        <ImageView
+            android:id="@+id/loading_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_6" />
+
+        <ImageView
+            android:id="@+id/loading_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_5" />
+
+        <ImageView
+            android:id="@+id/loading_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_4" />
+
+        <ImageView
+            android:id="@+id/loading_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_3" />
+
+        <ImageView
+            android:id="@+id/loading_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_2" />
+
+        <ImageView
+            android:id="@+id/loading_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/loading_1" />
+
+        <ImageView
+            android:id="@+id/map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/empty"
+            android:foregroundGravity="center_horizontal"
+            app:srcCompat="@drawable/map_with_empty_road" />
+
+
+    </RelativeLayout>
+</LinearLayout>

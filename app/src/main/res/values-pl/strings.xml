@@ -59,5 +59,10 @@
     <string name="coming_soon">Dostępne wkrótce</string>
     <string name="to_win">Do wygrania</string>
     <string name="x">X</string>
+    <string name="base">Podstawowe</string>
+    <string name="account">Konto</string>
+    <string name="profile">Profil</string>
+    <string name="road_adventure">Tor przygody</string>
+    <string name="rank">Ranking</string>
 
 </resources>
