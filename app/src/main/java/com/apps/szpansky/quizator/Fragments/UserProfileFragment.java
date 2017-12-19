@@ -33,7 +33,7 @@ public class UserProfileFragment extends Fragment {
     QuestionData questionData;
 
     ImageView userAvatar;
-    Button skipLockButton, getQuestionButton;
+    Button skipLockButton, getQuestionButton, showMenu;
     ProgressBar progressLvlLoading;
     TextView progressLvlText, userCurrentRank, userNextRank, userPreviousRank, rankPointsNext, userUserName;
 
@@ -77,6 +77,7 @@ public class UserProfileFragment extends Fragment {
         rankPointsNext = view.findViewById(R.id.rank_points_next);
         skipLockButton = view.findViewById(R.id.skip_lock_button);
         getQuestionButton = view.findViewById(R.id.get_question_button);
+        showMenu = view.findViewById(R.id.show_menu);
 
         progressLvlLoading = view.findViewById(R.id.progress_lvl);
         progressLvlText = view.findViewById(R.id.progress_txt);
@@ -108,6 +109,13 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 renewUserAnswer = new RenewUserAnswer(userData.getCookie(), userData.getUserId(), getFragmentManager(), getActivity().getApplicationContext());
                 renewUserAnswer.execute();
+            }
+        });
+
+        showMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openDrawerMenu();
             }
         });
 

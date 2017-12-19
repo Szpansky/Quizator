@@ -22,7 +22,6 @@
     <string name="username">Nazwa użytkownika</string>
     <string name="email_or_username">Email lub Nazwa</string>
     <string name="title_activity_get_question">Nowe Pytanie</string>
-
     <string name="get_question">Pobierz pytanie</string>
     <string name="empty">Brak</string>
     <string name="percent_of_lvl_complete">Procent ukończenia poziomu:</string>
@@ -33,7 +32,7 @@
     <string name="need_points">Wymaga punktów:</string>
     <string name="log_out">Wyloguj</string>
     <string name="close">Zamknij</string>
-    <string name="about_app">W aplikacji możesz zdobywać punkty, poprzez odpowiadanie na pytania.\nMiej nauwadze, że błędna odpowiedź to ujemne punkty.\nPowodzenia :)</string>
+    <string name="about_app">Punkty są za\n1: Loguj się codziennie i pobierz pytanie\n2: Poprawną odpowiedź\n(Miej na uwadze, że błędna odpowiedź to ujemne punkty)\n3: Dodanie pytania to 1 pkt\n4: Pytanie zakceptowane to 9 pkt\nW apliakcji jest MENU po lewej stronie\nPowodzenia :)</string>
     <string name="skip_lock">Omiń blokadę</string>
     <string name="ad_failed_to_load">Błąd połaczenia lub wykorzystałeś dzienny limit</string>
     <string name="question_error_daily_lock">Wróc jutro by odpowiedzieć</string>
@@ -66,5 +65,14 @@
     <string name="rank">Ranking</string>
     <string name="position">Pozycja</string>
     <string name="display_name">Nazwa wyświetlana</string>
+    <string name="category">Kategoria</string>
+    <string name="question_content">Treść pytania</string>
+    <string name="answer_a">Odpowiedź A</string>
+    <string name="answer_b">Odpowiedź B</string>
+    <string name="answer_c">Odpowiedź C</string>
+    <string name="answer_d">Odpowiedź D</string>
+    <string name="pick_correct_answer">Wybierz poprawną odpowiedź</string>
+    <string name="add">Dodaj</string>
+    <string name="show_menu">Pokaż menu</string>
 
 </resources>

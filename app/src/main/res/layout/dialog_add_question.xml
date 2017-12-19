@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground"
+    android:padding="@dimen/button_login_margin">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:drawable/editbox_background"
+            android:gravity="center"
+            android:text="@string/add_new_question"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:id="@+id/get_focus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background">
+
+            <EditText
+                android:id="@+id/question_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/category"
+                android:inputType="textLongMessage"
+                android:maxLength="30"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background">
+
+            <EditText
+                android:id="@+id/question_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/question_content"
+                android:inputType="textLongMessage"
+                android:maxLength="1000"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background">
+
+            <EditText
+                android:id="@+id/question_a"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/answer_a"
+                android:inputType="textLongMessage"
+                android:maxLength="200"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background">
+
+            <EditText
+                android:id="@+id/question_b"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/answer_b"
+                android:inputType="textLongMessage"
+                android:maxLength="200"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background">
+
+            <EditText
+                android:id="@+id/question_c"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/answer_c"
+                android:inputType="textLongMessage"
+                android:maxLength="200"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background">
+
+            <EditText
+                android:id="@+id/question_d"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/answer_d"
+                android:inputType="textLongMessage"
+                android:maxLength="200"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:drawable/editbox_background"
+            android:gravity="center"
+            android:text="@string/pick_correct_answer" />
+
+        <RadioGroup
+            android:id="@+id/correct_answer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_cell_margin"
+            android:background="@android:drawable/editbox_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/check_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/a" />
+
+            <RadioButton
+                android:id="@+id/check_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/b" />
+
+            <RadioButton
+                android:id="@+id/check_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/c" />
+
+            <RadioButton
+                android:id="@+id/check_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/d" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/add_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_login_margin"
+            android:text="@string/add" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_cell_margin" />
+
+    </LinearLayout>
+
+</ScrollView>

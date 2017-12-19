@@ -1,6 +1,8 @@
 package com.apps.szpansky.quizator;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,12 +12,15 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.apps.szpansky.quizator.DialogsFragments.AddQuestion;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.Fragments.LoadAdFragment;
 import com.apps.szpansky.quizator.Fragments.AppBarFragment;
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LoadAdFragment loadAdFragment;
     RoadFragment roadFragment;
     RanksFragment ranksFragment;
+    AddQuestion addQuestion;
 
 
     @Override
@@ -53,6 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         if (refreshUserData != null) refreshUserData.cancel(true);
         if (getQuestion != null) getQuestion.cancel(true);
+    }
+
+
+    /**
+     * That method is for refresh user data
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        refreshUserData = new RefreshUserData(userData.getCookie(), userData.getUserId(), userData, getSupportFragmentManager(), getApplicationContext());
+        refreshUserData.execute();
     }
 
 
@@ -67,11 +84,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userProfileFragment = UserProfileFragment.newInstance(userData);
         appBarFragment = AppBarFragment.newInstance(userData);
         roadFragment = RoadFragment.newInstance(userData.getRankName());
-       // loadAdFragment = LoadAdFragment.newInstance();
+        loadAdFragment = LoadAdFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, userProfileFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.content_app_bar, appBarFragment).commit();
-       // getSupportFragmentManager().beginTransaction().add(R.id.ad_frame, loadAdFragment).commit();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.ad_frame, loadAdFragment).commit();
 
 
         if (!MySharedPreferences.getMainTutorialWasShown(this)) {
@@ -146,26 +164,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     /**
-     * That method is for refresh user data
-     */
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        refreshUserData = new RefreshUserData(userData.getCookie(), userData.getUserId(), userData, getSupportFragmentManager(), getApplicationContext());
-        refreshUserData.execute();
-    }
-
-
-    /**
-     * Method first close drawer, when drawer is closed it run super method
+     * Method first close drawer, when drawer is closed it shows "logout" dialog
      */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Wylogwać ?");
+            alertDialog.setMessage("Na pewno chcesz się wylogwać ?");
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Tak", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Nie", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                }
+            });
+            alertDialog.show();
         }
     }
 
@@ -203,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startQuestion();
                 break;
             }
+            case R.id.nav_add_quest: {
+                addQuestion = AddQuestion.newInstance();
+                getSupportFragmentManager().beginTransaction().add(addQuestion, "AddQuestion").commit();
+            }
             case R.id.nav_profile: {
                 userProfileFragment = UserProfileFragment.newInstance(userData);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, userProfileFragment).commit();
@@ -215,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.nav_user_rank: {
                 ranksFragment = RanksFragment.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,ranksFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, ranksFragment).commit();
                 break;
             }
             case R.id.nav_rate_app: {
@@ -231,5 +258,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Method for simply open side menu
+     */
+    public void openDrawerMenu(){
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.openDrawer(GravityCompat.START);
     }
 }

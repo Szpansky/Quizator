@@ -8,4 +8,5 @@
     <dimen name="cell_padding">5dp</dimen>
     <dimen name="after_question_margin">60dp</dimen>
     <dimen name="button_login_margin">20dp</dimen>
+    <dimen name="text_cell_margin">10dp</dimen>
 </resources>

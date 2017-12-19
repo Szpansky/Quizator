@@ -8,6 +8,12 @@
             android:id="@+id/nav_quest"
             android:icon="@mipmap/ic_question_answer_black_24dp"
             android:title="@string/get_question" />
+
+        <item
+            android:id="@+id/nav_add_quest"
+            android:icon="@mipmap/ic_note_add_black_24dp"
+            android:title="@string/add_new_question" />
+
     </menu>
     </item>
 

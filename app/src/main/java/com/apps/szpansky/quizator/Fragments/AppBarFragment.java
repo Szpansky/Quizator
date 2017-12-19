@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.apps.szpansky.quizator.DialogsFragments.AddQuestion;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 
@@ -17,6 +18,8 @@ public class AppBarFragment extends Fragment {
     UserData userData;
 
     Button addQuestionButton;
+
+    AddQuestion addQuestion;
 
 
     public static AppBarFragment newInstance(UserData userData) {
@@ -47,8 +50,8 @@ public class AppBarFragment extends Fragment {
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getActivity(), getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-                toast.show();
+                addQuestion = AddQuestion.newInstance();
+                getFragmentManager().beginTransaction().add(addQuestion,"AddQuestion").commit();
             }
         });
     }

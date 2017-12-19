@@ -73,5 +73,18 @@
     <string name="rank">Ranks</string>
     <string name="position">Position</string>
     <string name="display_name">Display name</string>
+    <string name="a" translatable="false">a)</string>
+    <string name="b" translatable="false">b)</string>
+    <string name="c" translatable="false">c)</string>
+    <string name="d" translatable="false">d)</string>
+    <string name="category">Category</string>
+    <string name="question_content">Question content</string>
+    <string name="answer_a">Answer A</string>
+    <string name="answer_b">Answer B</string>
+    <string name="answer_c">Answer C</string>
+    <string name="answer_d">Answer D</string>
+    <string name="pick_correct_answer">Pick correct answer</string>
+    <string name="add">Add</string>
+    <string name="show_menu">Show menu</string>
 
 </resources>
