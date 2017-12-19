@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.NewQuestion;
+import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -22,8 +23,12 @@ public class AddQuestionTask extends BasicTask {
 
     private String addQuestionURL;
 
+
     public AddQuestionTask(NewQuestion question, FragmentManager fragmentManager, Context context) {
         super(fragmentManager, context);
+
+        UserData userData = new UserData();
+
         addQuestionURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/add_question/?insecure=cool" +
                 "&question_category=" + question.getCategory() +
                 "&question_text=" + question.getQuestionText() +
@@ -31,14 +36,17 @@ public class AddQuestionTask extends BasicTask {
                 "&question_b=" + question.getAnswerB() +
                 "&question_c=" + question.getAnswerC() +
                 "&question_d=" + question.getAnswerD() +
-                "&question_correct_answer=" + question.getCorrectAnswer();
+                "&question_correct_answer=" + question.getCorrectAnswer() +
+                "&user_display_name="+ userData.getDisplayName();
     }
+
 
     @Override
     protected void onSuccessExecute() {
         Information information = Information.newInstance("Dodano pomyślnie");
         getFragmentManager().beginTransaction().add(information, "Information").commit();
     }
+
 
     @Override
     protected Boolean doInBackground(Void... voids) {

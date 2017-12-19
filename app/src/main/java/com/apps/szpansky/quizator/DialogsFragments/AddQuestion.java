@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.apps.szpansky.quizator.R;
@@ -67,6 +66,7 @@ public class AddQuestion extends DialogFragment {
                 configureQuestion();
                 AddQuestionTask addQuestionTask = new AddQuestionTask(question, getFragmentManager(), getActivity().getBaseContext());
                 addQuestionTask.execute((Void) null);
+                dismiss();
             }
         });
     }
