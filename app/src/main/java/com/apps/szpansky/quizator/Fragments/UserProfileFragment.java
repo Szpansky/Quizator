@@ -18,6 +18,7 @@ import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
 import com.apps.szpansky.quizator.Tasks.GetQuestion;
+import com.apps.szpansky.quizator.Tasks.RefreshUserData;
 import com.apps.szpansky.quizator.Tasks.RenewUserAnswer;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
@@ -28,12 +29,13 @@ public class UserProfileFragment extends Fragment {
 
     GetQuestion getQuestion = null;
     RenewUserAnswer renewUserAnswer = null;
+    RefreshUserData refreshUserData = null;
 
     UserData userData;
     QuestionData questionData;
 
     ImageView userAvatar;
-    Button skipLockButton, getQuestionButton, showMenu;
+    Button skipLockButton, getQuestionButton, showMenu, refreshProfileButton;
     ProgressBar progressLvlLoading;
     TextView progressLvlText, userCurrentRank, userNextRank, userPreviousRank, rankPointsNext, userUserName;
 
@@ -78,6 +80,7 @@ public class UserProfileFragment extends Fragment {
         skipLockButton = view.findViewById(R.id.skip_lock_button);
         getQuestionButton = view.findViewById(R.id.get_question_button);
         showMenu = view.findViewById(R.id.show_menu);
+        refreshProfileButton = view.findViewById(R.id.refresh_profile);
 
         progressLvlLoading = view.findViewById(R.id.progress_lvl);
         progressLvlText = view.findViewById(R.id.progress_txt);
@@ -116,6 +119,14 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).openDrawerMenu();
+            }
+        });
+
+        refreshProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshUserData = new RefreshUserData(userData,getFragmentManager(),getActivity().getBaseContext());
+                refreshUserData.execute((Void) null);
             }
         });
 

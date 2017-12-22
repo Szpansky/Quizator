@@ -66,4 +66,10 @@ public class NewQuestion {
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
+
+
+    @Override
+    public String toString() {
+        return getQuestionText()+getCategory()+getAnswerA()+getAnswerB()+getAnswerC()+getAnswerD()+getCorrectAnswer();
+    }
 }

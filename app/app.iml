@@ -133,18 +133,18 @@
     <orderEntry type="library" name="com.android.support:support-annotations:26.1.0@jar" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-utils-26.1.0" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-ui-26.1.0" level="project" />
-    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.1.0-beta3@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-ads-license-11.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="com.google.code.findbugs:jsr305:2.0.1@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="org.hamcrest:hamcrest-core:1.3@jar" level="project" />
     <orderEntry type="library" name="com.android.support:support-compat-26.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support.test.espresso:espresso-core-2.2.2" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.1.0-beta4" level="project" />
     <orderEntry type="library" name="com.github.bumptech.glide:glide:4.0.0@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-ads-11.8.0" level="project" />
     <orderEntry type="library" name="com.github.bumptech.glide:gifdecoder:4.0.0@jar" level="project" />
-    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.1.0-beta3" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support.test:rules-0.5" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.1.0-beta4@jar" level="project" />
     <orderEntry type="library" name="android.arch.core:common:1.0.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="org.hamcrest:hamcrest-library:1.3@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="org.hamcrest:hamcrest-integration:1.3@jar" level="project" />

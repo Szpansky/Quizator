@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.NewQuestion;
 import com.apps.szpansky.quizator.Tasks.AddQuestionTask;
+import com.apps.szpansky.quizator.Tools.TextChecker;
 
 
 public class AddQuestion extends DialogFragment {
@@ -29,6 +31,8 @@ public class AddQuestion extends DialogFragment {
     RadioGroup correctAnswer;
 
     NewQuestion question = new NewQuestion();
+
+    TextChecker textChecker = new TextChecker();
 
     public static AddQuestion newInstance() {
         AddQuestion addQuestion = new AddQuestion();
@@ -64,9 +68,15 @@ public class AddQuestion extends DialogFragment {
             @Override
             public void onClick(View v) {
                 configureQuestion();
-                AddQuestionTask addQuestionTask = new AddQuestionTask(question, getFragmentManager(), getActivity().getBaseContext());
-                addQuestionTask.execute((Void) null);
-                dismiss();
+
+                if (textChecker.isValidBase(question.toString())) {
+                    AddQuestionTask addQuestionTask = new AddQuestionTask(question, getFragmentManager(), getActivity().getBaseContext());
+                    addQuestionTask.execute((Void) null);
+                    dismiss();
+                }else{
+                    Toast.makeText(getContext(),getString(R.string.error_invalid_text_field),Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -84,6 +94,8 @@ public class AddQuestion extends DialogFragment {
         question.setAnswerC(questionC.getText().toString());
         question.setAnswerD(questionD.getText().toString());
         question.setCorrectAnswer(getCorrectAnswer());
+
+
     }
 
     private String getCorrectAnswer(){

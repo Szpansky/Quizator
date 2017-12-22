@@ -34,8 +34,8 @@ public class RefreshUserData extends AsyncTask<Void, Void, Boolean> {
     private String error = "";
     private final WeakReference<Context> context;
 
-    public RefreshUserData(String cookie, String userID, UserData userData, FragmentManager fragmentManager, Context context) {
-        sendLoginURL = context.getString(R.string.site_address) + "cyj@n3k/user/validate_auth_cookie/?insecure=cool&cookie=" + cookie + "&user_id=" + userID;
+    public RefreshUserData(UserData userData, FragmentManager fragmentManager, Context context) {
+        sendLoginURL = context.getString(R.string.site_address) + "cyj@n3k/user/validate_auth_cookie/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
         this.userData = userData;
         this.fragmentManager = fragmentManager;
         this.context = new WeakReference<>(context);

@@ -7,6 +7,7 @@
     <string name="error_incorrect_password">To hasło jest niepoprawne</string>
     <string name="error_invalid_email">Ten email jest niepoprawny</string>
     <string name="error_invalid_password">To hasło nie pasuje</string>
+    <string name="error_invalid_text_field">Niepoprawne dane w polu tekstowym</string>
     <string name="navigation_drawer_close">Zamknij menu</string>
     <string name="navigation_drawer_open">Otwórz menu</string>
     <string name="prompt_email">Email</string>
@@ -50,7 +51,7 @@
     <string name="remember_me">Zapamiętaj mnie</string>
     <string name="need">Potrzeba</string>
     <string name="error_when_downloading">Problem podczas pobierania danych</string>
-    <string name="info_password_was_send">asło zostało wysłane na podany adres</string>
+    <string name="info_password_was_send">Hasło zostało wysłane na podany adres</string>
     <string name="info_account_doesnt_exist">Konto nie istnieje</string>
     <string name="info_incorrect_account">Błędne konto</string>
     <string name="info_now_you_can_answer">Teraz znów możesz odpowiadać</string>
@@ -74,5 +75,6 @@
     <string name="pick_correct_answer">Wybierz poprawną odpowiedź</string>
     <string name="add">Dodaj</string>
     <string name="show_menu">Pokaż menu</string>
+    <string name="refresh_profile">Odśwież profil</string>
 
 </resources>

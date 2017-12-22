@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        refreshUserData = new RefreshUserData(userData.getCookie(), userData.getUserId(), userData, getSupportFragmentManager(), getApplicationContext());
+        refreshUserData = new RefreshUserData(userData, getSupportFragmentManager(), getApplicationContext());
         refreshUserData.execute();
     }
 
@@ -173,23 +173,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("Wylogwać ?");
-            alertDialog.setMessage("Na pewno chcesz się wylogwać ?");
-            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Tak", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Nie", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    alertDialog.dismiss();
-                }
-            });
-            alertDialog.show();
+            if(getSupportFragmentManager().findFragmentById(R.id.content_main) instanceof UserProfileFragment) {
+                final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Wylogwać ?");
+                alertDialog.setMessage("Na pewno chcesz się wylogwać ?");
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Tak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Nie", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }else {
+                userProfileFragment = UserProfileFragment.newInstance(userData);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, userProfileFragment).commit();
+            }
         }
+
     }
 
 
