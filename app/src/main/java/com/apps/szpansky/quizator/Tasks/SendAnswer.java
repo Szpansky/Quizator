@@ -2,19 +2,21 @@ package com.apps.szpansky.quizator.Tasks;
 
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
+import com.apps.szpansky.quizator.Constant;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.R;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 public class SendAnswer extends BasicTask {
 
@@ -24,7 +26,7 @@ public class SendAnswer extends BasicTask {
 
     public SendAnswer(String cookie, String userId, String userAnswer, FragmentManager fragmentManager, Context context) {
         super(fragmentManager, context);
-        update_game_url = getContext().getString(R.string.site_address) + "cyj@n3k/user/send_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
+        update_game_url = Constant.siteURL + Constant.siteApiUser  + "send_answer/?cookie=" + cookie + "&user_id=" + userId + "&user_answer=" + userAnswer;
     }
 
 
@@ -32,8 +34,6 @@ public class SendAnswer extends BasicTask {
     protected Boolean doInBackground(Void... voids) {
         try {
             URL url = new URL(update_game_url);
-            OkHttpClient client = new OkHttpClient();
-            Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
             Response respond = client.newCall(request).execute();
 

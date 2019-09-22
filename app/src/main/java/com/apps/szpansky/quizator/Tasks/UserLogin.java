@@ -3,20 +3,22 @@ package com.apps.szpansky.quizator.Tasks;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
+import com.apps.szpansky.quizator.Constant;
 import com.apps.szpansky.quizator.MainActivity;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -28,7 +30,7 @@ public class UserLogin extends BasicTask {
 
     public UserLogin(String email, String password, UserData userData, FragmentManager fragmentManager, Context context) {
         super(fragmentManager, context);
-        sendLoginURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/generate_auth_cookie/?insecure=cool&username=" + email + "&password=" + password;
+        sendLoginURL = Constant.siteURL + Constant.siteApiUser  + "generate_auth_cookie/?username=" + email + "&password=" + password;
         this.userData = userData;
     }
 
@@ -36,8 +38,6 @@ public class UserLogin extends BasicTask {
     protected Boolean doInBackground(Void... params) {
         try {
             URL url = new URL(sendLoginURL);
-            OkHttpClient client = new OkHttpClient();
-            Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
             Response respond = client.newCall(request).execute();
             String json = respond.body().string();

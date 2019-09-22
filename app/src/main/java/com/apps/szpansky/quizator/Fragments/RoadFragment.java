@@ -1,14 +1,13 @@
 package com.apps.szpansky.quizator.Fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.apps.szpansky.quizator.R;
-import com.apps.szpansky.quizator.SimpleData.UserData;
 
 
 public class RoadFragment extends Fragment {

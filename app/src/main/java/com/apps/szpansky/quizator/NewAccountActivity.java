@@ -2,11 +2,9 @@ package com.apps.szpansky.quizator;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 
-import android.os.AsyncTask;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,18 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.apps.szpansky.quizator.DialogsFragments.Information;
-import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.Tasks.CreateNewAccount;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
 
 
 public class NewAccountActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {

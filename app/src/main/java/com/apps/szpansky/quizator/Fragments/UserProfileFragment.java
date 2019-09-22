@@ -1,10 +1,9 @@
 package com.apps.szpansky.quizator.Fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,6 @@ import com.apps.szpansky.quizator.Tasks.GetQuestion;
 import com.apps.szpansky.quizator.Tasks.RefreshUserData;
 import com.apps.szpansky.quizator.Tasks.RenewUserAnswer;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 
 public class UserProfileFragment extends Fragment {

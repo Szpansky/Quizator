@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Quizator</string>
-    <string name="site_address" translatable="false">http://lukasz3.eradon.pl/g5/</string>
     <string name="ads_banner_main_id" translatable="false">ca-app-pub-9635712631261774/2875827085</string>
     <string name="ads_reward_main_id" translatable="false">ca-app-pub-9635712631261774/7436762896</string>
     <string name="ads_reward_full_screen" translatable="false">ca-app-pub-9635712631261774/4888378765</string>

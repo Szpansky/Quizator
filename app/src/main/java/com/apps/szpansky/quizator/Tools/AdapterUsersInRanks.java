@@ -1,14 +1,15 @@
 package com.apps.szpansky.quizator.Tools;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.UserData;
@@ -25,7 +26,7 @@ public class AdapterUsersInRanks extends ArrayAdapter<UserDataInRank> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView, @Nullable ViewGroup parent) {
         UserDataInRank userDataInRank = getItem(position);
 
         if (convertView == null) {

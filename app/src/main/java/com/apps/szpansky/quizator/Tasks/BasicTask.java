@@ -3,13 +3,18 @@ package com.apps.szpansky.quizator.Tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.DialogsFragments.Loading;
 import com.apps.szpansky.quizator.R;
 
 import java.lang.ref.WeakReference;
+import java.net.URL;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 
 public abstract class BasicTask extends AsyncTask<Void, Void, Boolean> {
@@ -17,10 +22,15 @@ public abstract class BasicTask extends AsyncTask<Void, Void, Boolean> {
     private FragmentManager fragmentManager;
     private final WeakReference<Context> context;
     private String error = "";
+    OkHttpClient client;
+    Request.Builder builder;
 
     BasicTask(FragmentManager fragmentManager, Context context) {
         this.fragmentManager = fragmentManager;
         this.context = new WeakReference<>(context);
+
+        client = new OkHttpClient();
+        builder = new Request.Builder();
     }
 
     FragmentManager getFragmentManager() {

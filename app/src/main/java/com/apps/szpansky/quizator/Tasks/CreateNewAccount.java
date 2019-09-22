@@ -1,20 +1,22 @@
 package com.apps.szpansky.quizator.Tasks;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
+import com.apps.szpansky.quizator.Constant;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.Tools.MySharedPreferences;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 
 public class CreateNewAccount extends BasicTask {
@@ -38,8 +40,8 @@ public class CreateNewAccount extends BasicTask {
             mDisplayName = username;
         else mDisplayName = displayName;
 
-        this.siteAddress = getContext().getString(R.string.site_address);
-        this.nonceURL = siteAddress + "cyj@n3k/get_nonce/?controller=user&method=register&insecure=cool";
+
+        this.nonceURL = Constant.siteURL + Constant.siteApiUser  + "get_nonce/?controller=user&method=register";
     }
 
 
@@ -47,8 +49,6 @@ public class CreateNewAccount extends BasicTask {
     protected Boolean doInBackground(Void... params) {
         try {
             URL url = new URL(nonceURL);
-            OkHttpClient client = new OkHttpClient();
-            Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
             Response respond = client.newCall(request).execute();
             String json = respond.body().string();
@@ -57,11 +57,11 @@ public class CreateNewAccount extends BasicTask {
 
                 if (object.getString("status").equals("ok")) {
                     String nonceValue = object.getString("nonce");
-                    String registerURL = siteAddress + "cyj@n3k/user/register/?insecure=cool&notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mDisplayName + "&user_pass=" + mPassword;
+                    String registerURL = Constant.siteURL + Constant.siteApiUser  +  "register/?notify=no&username=" + mUsername + "&email=" + mEmail + "&nonce=" + nonceValue + "&display_name=" + mDisplayName + "&user_pass=" + mPassword;
 
                     url = new URL(registerURL);
-                    client = new OkHttpClient();
-                    builder = new Request.Builder();
+                  //  client = new OkHttpClient();
+                   // builder = new Request.Builder();
                     request = builder.url(url).build();
                     respond = client.newCall(request).execute();
                     String json2 = respond.body().string();

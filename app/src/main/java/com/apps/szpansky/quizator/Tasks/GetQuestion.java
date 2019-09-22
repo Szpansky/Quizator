@@ -2,24 +2,23 @@ package com.apps.szpansky.quizator.Tasks;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
-import com.apps.szpansky.quizator.DialogsFragments.Information;
+import com.apps.szpansky.quizator.Constant;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.ShowQuestionActivity;
 import com.apps.szpansky.quizator.SimpleData.QuestionData;
 import com.apps.szpansky.quizator.SimpleData.UserData;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 import java.net.URL;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -33,7 +32,7 @@ public class GetQuestion extends BasicTask {
 
     public GetQuestion(UserData userData, QuestionData questionData, FragmentManager fragmentManager, Context context) {
         super(fragmentManager, context);
-        questionURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/get_question/?insecure=cool&cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
+        questionURL = Constant.siteURL + Constant.siteApiUser  + "get_question/?cookie=" + userData.getCookie() + "&user_id=" + userData.getUserId();
         this.questionData = questionData;
         this.userData = userData;
     }
@@ -43,8 +42,6 @@ public class GetQuestion extends BasicTask {
     protected Boolean doInBackground(Void... params) {
         try {
             URL url = new URL(questionURL);
-            OkHttpClient client = new OkHttpClient();
-            Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
             Response respond = client.newCall(request).execute();
             String json = respond.body().string();

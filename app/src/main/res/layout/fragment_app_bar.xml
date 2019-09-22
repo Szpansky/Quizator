@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/road_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/bc_quizator"
         android:foregroundGravity="center_horizontal"

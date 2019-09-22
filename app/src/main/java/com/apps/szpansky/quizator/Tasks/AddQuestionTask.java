@@ -1,13 +1,13 @@
 package com.apps.szpansky.quizator.Tasks;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
+import com.apps.szpansky.quizator.Constant;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.R;
 import com.apps.szpansky.quizator.SimpleData.NewQuestion;
 import com.apps.szpansky.quizator.SimpleData.UserData;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -17,6 +17,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+
 
 
 public class AddQuestionTask extends BasicTask {
@@ -29,8 +31,8 @@ public class AddQuestionTask extends BasicTask {
 
         UserData userData = new UserData();
 
-        addQuestionURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/add_question/?insecure=cool" +
-                "&question_category=" + question.getCategory() +
+        addQuestionURL = Constant.siteURL + Constant.siteApiUser + "add_question/" +
+                "?question_category=" + question.getCategory() +
                 "&question_text=" + question.getQuestionText() +
                 "&question_a=" + question.getAnswerA() +
                 "&question_b=" + question.getAnswerB() +
@@ -52,8 +54,6 @@ public class AddQuestionTask extends BasicTask {
     protected Boolean doInBackground(Void... voids) {
         try {
             URL url = new URL(addQuestionURL);
-            OkHttpClient client = new OkHttpClient();
-            Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
             Response respond = client.newCall(request).execute();
             String json = respond.body().string();

@@ -1,19 +1,21 @@
 package com.apps.szpansky.quizator.Tasks;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
+import com.apps.szpansky.quizator.Constant;
 import com.apps.szpansky.quizator.DialogsFragments.Information;
 import com.apps.szpansky.quizator.R;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 
 public class RenewUserAnswer extends BasicTask {
@@ -23,7 +25,7 @@ public class RenewUserAnswer extends BasicTask {
 
     public RenewUserAnswer(String cookie, String userId, FragmentManager fragmentManager, Context context) {
         super(fragmentManager, context);
-        renewUserAnswerURL = getContext().getString(R.string.site_address) + "cyj@n3k/user/set_user_can_answer/?insecure=cool&cookie=" + cookie + "&user_id=" + userId;
+        renewUserAnswerURL = Constant.siteURL + Constant.siteApiUser  + "set_user_can_answer/?cookie=" + cookie + "&user_id=" + userId;
     }
 
 
@@ -32,8 +34,6 @@ public class RenewUserAnswer extends BasicTask {
         URL url;
         try {
             url = new URL(renewUserAnswerURL);
-            OkHttpClient client = new OkHttpClient();
-            Request.Builder builder = new Request.Builder();
             Request request = builder.url(url).build();
             Response respond;
             respond = client.newCall(request).execute();
